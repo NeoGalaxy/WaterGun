@@ -1,21 +1,21 @@
-% INF432 Project
+# INF432 Project
 
 ## Organisation du projet
 
 Dans ce projet, il y a 3 répertoires :  
 
-- *Classes* qui contient toutes les classes implémentés pour le projet. Notre rendu final pourrait se résumer à ce repertoire, car l'idée serait que le type `Grid` puisse prendre une grille en argument, et donner les solutions de la grille.  
+- [*Classes*](#Classes) qui contient toutes les classes implémentés pour le projet. Notre rendu final pourrait se résumer à ce repertoire, car l'idée serait que le type [`Grid`](#Gridpy) puisse prendre une grille, dans l'un des [formats prévus](#inputs), en argument, et donner les solutions de la grille.  
 
-- *Inputs* qui sont un ensemble de grilles que l'on peut utiliser comme entrées à la classe `Grid` (c.f. l'explication de comment `Grid` fonctionne). Les grilles y sont ensuites rangées par syntaxe : pour l'instant il n'y a que la syntaxe **grid**, qui est assez intuitive, mais par la suite, je prévois de créer aussi une syntaxe au format *JSON*, que je vous expliquerais et qui est simple à comprendre.  
+- [*Inputs*](#Inputs) qui sont un ensemble de grilles que l'on peut utiliser comme entrées à la classe [`Grid`](#Gridpy). Les grilles y sont ensuites rangées par syntaxe : pour l'instant il n'y a que la syntaxe **[grid](#format-grid1)**, qui est assez intuitive, mais par la suite, je prévois de créer aussi une syntaxe au format *JSON*.  
 
-- *Tests* qui contient des fichiers python à exécuter pour faire des tests. C'est aussi ici que vous pouvez implémenter des fonctions ou méthodes avant de les mettre au bon endroit, ou pour faire tout et n'importe quoi. En gros, c'est un peu un bac-à-sable. Vous y trouverez `classes.js`, qui permet d'importer directement les différentes classes dans le dossier *Classes* en écrivant juste `import classes`, ou alors `from classes import *`.  
+- [*Tests*](#Tests) qui contient des fichiers python à exécuter pour faire des tests. C'est aussi ici que vous pouvez implémenter des fonctions ou méthodes avant de les mettre au bon endroit, ou pour faire tout et n'importe quoi. En gros, c'est un peu un bac-à-sable. Vous y trouverez [`classes.py`](https://github.com/NeoGalaxy/INF432/blob/master/Tests/classes.py), qui permet d'importer directement les différentes classes dans le dossier [*Classes*](https://github.com/NeoGalaxy/INF432/tree/master/Classes) en écrivant juste `import classes`, ou alors `from classes import *`.  
 
 
 ## Classes
 
-Voici les différentes classes présentes dans le projet, un exemple d'utilisation, et comment elles fonctionnent. Les morceaux de codes donnés en exemple fonctionnent dans le dossier *Tests* (car le `import` fonctionne grâce au **classes.py**).
+Voici les différentes classes présentes dans le projet, un exemple d'utilisation, et comment elles fonctionnent. Les morceaux de codes donnés en exemple fonctionnent dans le dossier *Tests* (car le `import` fonctionne grâce au [`classes.py`](https://github.com/NeoGalaxy/INF432/blob/master/Tests/classes.py)).
 
-### Grid.py
+### [Grid.py](https://github.com/NeoGalaxy/INF432/blob/master/Classes/Grid.py)
 
 ```python
 from classes import Grid
@@ -28,7 +28,7 @@ print("C'est une grille ",grille.l,"par", grille.h) # affiche la largeur et la h
 print(grille.get_grid()) # affiche la grille au format grid
 ```
 
-La classe `Grid` permet de parser une grille. Les attributs qui sont enregistrés dans la classe `Grille` sont :
+La classe `Grid` permet de parser une grille. Les attributs qui sont enregistrés dans la classe `Grid` sont :
 
 - les dimensions (L et H)
 
@@ -46,7 +46,7 @@ La classe `Grid` permet de parser une grille. Les attributs qui sont enregistré
 
 **mkGroups** : *Non implémenté -* Lance le regroupement des cases par groupe, afin de reconnaître les formes de la grille
 
-### CNF.py
+### [CNF.py](https://github.com/NeoGalaxy/INF432/blob/master/Classes/CNF.py)
 ```python
 from classes import CNF
 
@@ -80,7 +80,7 @@ Elle contient des littéraux, que j'ai définit tel des entiers stricement posit
 
 **Constructeur** : Le constructeur `Clause(args...)` crée un objet de classe `Clause`, et exécute `addLitt()` sur les arguments `args`.
 
-**addLitt** : La méthode `addLitt(args...)` prend en argument un nombre non psécifié de littéraux (càd d'entiers non nuls ou de chaînes de charactères) et les ajoute à la clause. La méthode renvoie l'objet (afin de pouvoir cascader les méthodes). Lance une erreur si un argument n'est pas un littéral.  
+**addLitt** : La méthode `addLitt(args...)` prend en argument un nombre non spécifié de littéraux (càd d'entiers non nuls ou de chaînes de charactères) et les ajoute à la clause. La méthode renvoie l'objet (afin de pouvoir cascader les méthodes). Lance une erreur si un argument n'est pas un littéral.  
 *Si vous avez une liste `liste` de littéraux que vous voulez ajouter à la clause, pensez à la syntaxe `addLitt(*liste)`*
 
 ### La classe `CNF`
@@ -94,9 +94,9 @@ La classe `CNF` permet de créer un *conjunctive normal form*, qui est tel une l
 **addClause** : La méthode `addClause(args...)` prend en argument un nombre non psécifié de clauses et les ajoute au `CNF`. La méthode renvoie l'objet (afin de pouvoir cascader les méthodes). Lance une erreur si un argument n'est pas une clause.  
 *Si vous avez une liste `liste` de clauses que vous voulez ajouter à la clause, pensez à la syntaxe `addClause(*liste)`*
 
-## Inputs
+## [Inputs](https://github.com/NeoGalaxy/INF432/tree/master/Inputs)
 
-Aujourd'hui, un seul format d'entrée est possible : le format `grid`. Un format `JSON` est à prévoir, pour par exemple de grandes grilles.
+Aujourd'hui, un seul format d'entrée est possible : le format [`grid1`](#Format-grid1). Un format `JSON` est à prévoir, pour par exemple de grandes grilles.
 
 ### Format grid1
 
