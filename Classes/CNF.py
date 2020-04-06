@@ -6,12 +6,15 @@ class Clause:
 		self.addLitt(*litterals)
 
 	def addLitt(self, *litterals) :
+		c = list(self.c)
 		for l in litterals:
 			if (not (type(l) in [str,int])) : raise TypeError(
 				"Clauses contains litterals, which should be strings or integers."+
 				" The argument '"+str(l)+"' is of type '"+str(type(l))+"'."
 			)
-			self.c.append(l)
+			if (l == 0) : raise TypeError("The value 0 is forbidden, since it has virtually no negation.")
+			c.append(l)
+		self.c = c
 		return self
 
 	def __str__(self):
