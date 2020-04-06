@@ -1,12 +1,12 @@
-# INF432 Project
+% INF432 Project
 
 ## Organisation du projet
 
 Dans ce projet, il y a 3 répertoires :  
 
-- [*Classes*](#Classes) qui contient toutes les classes implémentés pour le projet. Notre rendu final pourrait se résumer à ce repertoire, car l'idée serait que le type [`Grid`](#Grid.py) puisse prendre une grille en argument, et donner les solutions de la grille.  
+- *Classes* qui contient toutes les classes implémentés pour le projet. Notre rendu final pourrait se résumer à ce repertoire, car l'idée serait que le type `Grid` puisse prendre une grille en argument, et donner les solutions de la grille.  
 
-- *Inputs* qui sont un ensemble de grilles que l'on peut utiliser comme entrées à la classe `Grid` (c.f. l'explication de comment [`Grid`](#Grid.py) fonctionne). Les grilles y sont ensuites rangées par syntaxe : pour l'instant il n'y a que la syntaxe **grid**, qui est assez intuitive, mais par la suite, je prévois de créer aussi une syntaxe au format *JSON*, que je vous expliquerais et qui est simple à comprendre.  
+- *Inputs* qui sont un ensemble de grilles que l'on peut utiliser comme entrées à la classe `Grid` (c.f. l'explication de comment `Grid` fonctionne). Les grilles y sont ensuites rangées par syntaxe : pour l'instant il n'y a que la syntaxe **grid**, qui est assez intuitive, mais par la suite, je prévois de créer aussi une syntaxe au format *JSON*, que je vous expliquerais et qui est simple à comprendre.  
 
 - *Tests* qui contient des fichiers python à exécuter pour faire des tests. C'est aussi ici que vous pouvez implémenter des fonctions ou méthodes avant de les mettre au bon endroit, ou pour faire tout et n'importe quoi. En gros, c'est un peu un bac-à-sable. Vous y trouverez `classes.js`, qui permet d'importer directement les différentes classes dans le dossier *Classes* en écrivant juste `import classes`, ou alors `from classes import *`.  
 
@@ -32,9 +32,9 @@ La classe `Grid` permet de parser une grille. Les attributs qui sont enregistré
 
 - les dimensions (L et H)
 
-- deaux tableaux décrivant s'il y a un tableau à chaque intersection de deux cases (pareil que les Bc et Bl dans le rapport)
+- deux tableaux décrivant s'il y a un tableau à chaque intersection de deux cases (pareil que les Bc et Bl dans le rapport)
 
-- deaux tableaux décrivant les valeurs sur les cotés
+- deux tableaux décrivant les valeurs sur les cotés
 
 *Vous n'êtes pas obligés de savoir comment ils y sont conservés exactement, et je vais m'arranger pour que ce soit impossible de le modifier de l'exterieur. Mais n'hésitez pas à me demander d'ajouter un moyer de lire directement ces valeurs, et par quelle manière ça vous arrangerait.*
 
@@ -52,26 +52,91 @@ from classes import CNF
 
 print(CNF(("x","y","z"),("-x","-y","z")))
 # -> CNF{Cl['x', 'y', 'z'], Cl['-x', '-y', 'z']}
+# i.e. la CNF (x + y + z) * (-x + -y + z)
 
 print(CNF((1,2,3),(-1,-2,3)))
-# -> CNF{Cl['x', 'y', 'z'], Cl['-x', '-y', 'z']}
+# -> CNF{Cl[1, 2, 3], Cl[-1, -2, 3]}
+# i.e. une CNF équivalente à (si <x:= 1>, <y:= 2> et <z:= 3>) : 
+# (x + y + z) * (-x + -y + z)
 
 from classes import Clause
 
 print(Clause("x","-y","z"))
 # -> Cl['x', '-y', 'z']
+# i.e. la Clause x + -y + z
 
 print(CNF(Clause("x","-y","z"), Clause("-x","y")))
 # -> CNF{Cl['x', '-y', 'z'], Cl['-x', 'y']}
+# i.e. la CNF (x + y + z) * (-x + -y)
 
 ```
-
-La classe (i.e. le type) `CNF` permet de créer un *conjunctive normal form*, qui est équivalent à une liste de clauses. J'ai alors défini le type `Clause`, qui est une liste de litteraux. Tout cela est défini dans *Classes/CNF.py*.
 
 ### La classe `Clause`
 
-Pour utiliser la classe `Clause`, il faut l'importer des classes. 
-```python
-from Classes import Clause
+La classe `Clause` permet de créer des clauses. Elle sert principalement à être utilisée dans la classe `CNF`, qui permet d'enregister un *conjunctive normal form* en attendant de l'écrire dans un fichier au format *DIMACS*.  
+Elle contient des littéraux, que j'ai définit tel des entiers stricement positifs ou des chaines de carractères. Les entiers négatifs ou les chaines commençant par un `-` sont les négations des littéraux qui leur correspondent. Quand le fichier *DIMACS* sera créé, tous les littéraix seront traduits en des entier positifs entre 1 et le nombre de littéraux. 
+
+#### Méthodes
+
+**Constructeur** : Le constructeur `Clause(args...)` crée un objet de classe `Clause`, et exécute `addLitt()` sur les arguments `args`.
+
+**addLitt** : La méthode `addLitt(args...)` prend en argument un nombre non psécifié de littéraux (càd d'entiers non nuls ou de chaînes de charactères) et les ajoute à la clause. La méthode renvoie l'objet (afin de pouvoir cascader les méthodes). Lance une erreur si un argument n'est pas un littéral.  
+*Si vous avez une liste `liste` de littéraux que vous voulez ajouter à la clause, pensez à la syntaxe `addLitt(*liste)`*
+
+### La classe `CNF`
+
+La classe `CNF` permet de créer un *conjunctive normal form*, qui est tel une liste de clauses. Elle permet de créer des *conjunctive normal form* qui seront prêts à être écrits dans un fichier *DIMACS*. Des littéraux qui sont égaux (d'après la comparaison `==` de Python) seront considérés tel un même littéral (de même, un entier et son négatifs seront considérés tels des négations l'un de l'autre, et de même pour un string et le même string avec un `-` devant).
+
+### Méthodes
+
+**Constructeur** : Le constructeur `CNF(args...)` crée un objet de classe `CNF`, et exécute `addClause()` sur les arguments `args`.
+
+**addClause** : La méthode `addClause(args...)` prend en argument un nombre non psécifié de clauses et les ajoute au `CNF`. La méthode renvoie l'objet (afin de pouvoir cascader les méthodes). Lance une erreur si un argument n'est pas une clause.  
+*Si vous avez une liste `liste` de clauses que vous voulez ajouter à la clause, pensez à la syntaxe `addClause(*liste)`*
+
+## Inputs
+
+Aujourd'hui, un seul format d'entrée est possible : le format `grid`. Un format `JSON` est à prévoir, pour par exemple de grandes grilles.
+
+### Format grid1
+
 ```
-Ensuite, il faut 
+grid1
+  _ _ _ _ _ _   # Ligne représentant le "toît" de la grille.
+5|_|  _ _ _| |  #|
+3|  _|_    |_|  #|
+3|_|_  | |_ _|  #|
+2|   |_|_|  _|  #|
+2| |  _   _|_|  #|
+ |_|_|_|_|_ _|  #\-> Lignes de la grille, décrivant les murs et valeurs horizontales
+  5 3 2 3 3 4   # Valeurs verticales
+```
+
+Le format *grid1* a été créé afin d'avoir une représentation assez visuelle du fichier. 
+
+1- La première ligne contient juste le mot `grid1`, rien de moins, rien de plus.  
+2- La seconde ligne est composée essentiellement du toit de la grille, c'est-à-dire d'espaces et d'underscores comme montré ci-dessus.  
+3- Les lignes suivantes indiquent le nombre de cases qui doivent être remplies sur la ligne, ainsi que la présence ou l'absence de murs horizontaux sur les cotés de chaque cases et verticaux sur le dessous de chaque case. Vous pouvez remarquer que sur la dernière ligne, les murs horizontaux sont tous présents, ainsi que les murs verticaux en début et fin de ligne (pour que la grille soit fermée).  
+4- La dernière ligne est composée des valeurs décrivant le nombre de cases d'eau sur chaque colonne.
+
+#### Règles d'alignement :
+
+Règle 1
+> La taille horizontale de chaque case doit être la même. Exemple :
+> ```
+> [...] __ ___ _ _ [...] # toit
+> [...]|  |___| |_|[...] # lignes intermédiaires
+> [...]|__|___|_|_|[...] # dernière ligne
+> [...] 12  3  1 2 [...] # valeurs verticales
+> ``` 
+> *Cette règle a été mise-en place pour permettre des valeurs verticales aussi grandes que possibles*
+
+Règle 2
+> L'espace devant chaque ligne doit être le même. Exemple :
+> ```
+>    _ _ _[...] # toit
+> 1 | |_| [...] # lignes intermédiaires
+> 13|_|_|_[...] # dernière ligne
+>    1    [...] # valeurs verticales
+> ``` 
+> *Cette règle a été mise-en place pour permettre des valeurs horizontales aussi grandes que possibles*
