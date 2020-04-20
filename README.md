@@ -1,5 +1,25 @@
 # INF432 Project
 
+## Issues
+
+- **Ajout de fonctionnalités importantes**  
+#2 Implémenter l'algorithme de création de groupes de cases  
+#3 Créer un CNF décrivant les règles de “water’s physics”  
+#5 Créer un CNF décrivant les règles des valeurs au bord de la grille  
+#7 Permettre à l'objet CNF d'écrire au format DIMACS -> Antoine  
+
+- **Discussions**  
+#6 Choisir ENSEMBLE une convention pour nommer Wi,j dans l'objet CNF  
+#8 Créer et modifier les formats d'entrée pour la classe Grid  
+
+- **Ajout de fonctionnalités utiles**  
+#1 Modifier le constructeur `Grid()` -> Gwennan  
+#4 Fusionner les CNF et (Clauses?) -> Pacôme  
+#8 Créer et modifier les formats d'entrée pour la classe Grid  
+#9 Créer une collection de grilles de test  
+#10 Faire un outil de génération de grille automatique  
+#11 Faire un outil ou une fonction de vérification de solution  
+
 ## Organisation du projet
 
 Dans ce projet, il y a 3 répertoires :  
