@@ -42,6 +42,37 @@ class CNF:
 			)
 		return self
 
+	def ecrDimacs(self, path):
+			clauses =  len(slef.c)
+			maxLitterals = 0
+			tempo = ""
+
+			for cl in self.c:
+				if (len(cl)>maxLitterals):
+					maxLitterals = len(cl)
+				for l in cl.c:
+					tempo = tempo + str(l) + " "
+				tempo = tempo + "0\n"
+				
+			# we should have : tempo = " l0 l1 0\nl2 l3 l4 0\n ..."		
+			
+			fichier = open(path,"w")
+			fichier.write("c language : DIMACS CNF -> for the sat solver\n")
+			fichier.write("p cnf {} {}\n" .format(maxLitterals, clauses))
+			fichier.write(tempo)
+			fichier.close()
+			"""
+			Si on a self.c = [[1, -3], [2, 3, -1]] le fichier sera le suivant :
+				*************************************************
+				* c language : DIMACS CNF -> for the sat solver *
+				* p cnf 3 2										*
+				* 1 -3 0										*
+				* 2 3 -1 0										*
+				*												*
+				*************************************************
+			"""
+
+
 	def __str__(self):
 		return ("CNF{"+", ".join([str(x) for x in self.c])+"}")
 
