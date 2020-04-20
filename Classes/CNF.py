@@ -45,7 +45,6 @@ class CNF:
 
 	def ecrDimacs(self, path):
 			clauses =  len(self.c)
-			maxLiterals = 0
 			tempo = ""
 
 			for cl in self.c:
@@ -55,14 +54,12 @@ class CNF:
 					if (l[0] == '-') :
 						l = l[1:]
 						if not (l in list(self.dico.keys())) :
-							maxLiterals += 1
-							self.dico[l] = str(maxLiterals)
+							self.dico[l] = str(len(self.dico)+1)
 						l = '-' + self.dico.get(l)
 
 					else :
 						if not (l in list(self.dico.keys())) :
-							maxLiterals += 1
-							self.dico[l] = str(maxLiterals)
+							self.dico[l] = str(len(self.dico)+1)
 						l = self.dico.get(l)
 
 					tempo += l + " "
@@ -81,7 +78,7 @@ class CNF:
 			
 			fichier = open(path,"w")
 			fichier.write("c language : DIMACS CNF -> for the sat solver\n")
-			fichier.write("p cnf {} {}\n" .format(maxLiterals, clauses))
+			fichier.write("p cnf {} {}\n" .format(len(self.dico), clauses))
 			fichier.write(tempo)
 			fichier.close()
 			"""
