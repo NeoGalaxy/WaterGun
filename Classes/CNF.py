@@ -26,6 +26,7 @@ class Clause:
 
 class CNF:
 	def __init__(self, *clauses):
+		self.dico = {}
 		self.c = []#List[Clause] # content
 		self.addClause(*clauses)
 
@@ -44,30 +45,54 @@ class CNF:
 
 	def ecrDimacs(self, path):
 			clauses =  len(slef.c)
-			maxLitterals = 0
+			maxLiterals = 0
 			tempo = ""
 
 			for cl in self.c:
-				if (len(cl)>maxLitterals):
-					maxLitterals = len(cl)
 				for l in cl.c:
-					tempo = tempo + str(l) + " "
-				tempo = tempo + "0\n"
-				
-			# we should have : tempo = " l0 l1 0\nl2 l3 l4 0\n ..."		
+					l = str(l)
+					
+					if (l[0] = '-') :
+						l = l[1:]
+						if not dico.has_key(l) :
+							maxLiterals += 1
+							self.dico[l] = str(maxLiterals)
+						l = '-' + self.dico.get(l)
+
+					else :
+						if not dico.has_key(l) :
+							maxLiterals += 1
+							self.dico[l] = str(maxLiterals)
+						l = self.dico.get(l)
+
+					tempo += l + " "
+
+				tempo += "0\n"
+
+				"""
+				if at the beginning whe have : self.dico = {} and self.c = [[5, -2, z],[z, a, -5],[2, -z],[-a]],
+				we should obtain :
+					# self.dico = {"5" : "1", "2" : "2", "z" : "3", "a" : "4"}
+					# tempo = "1 -2 3 0\n3 4 -1 0\n2 -3 0\n-4 0\n"
+					maxLiterals = 4
+				"""
+
+					
 			
 			fichier = open(path,"w")
 			fichier.write("c language : DIMACS CNF -> for the sat solver\n")
-			fichier.write("p cnf {} {}\n" .format(maxLitterals, clauses))
+			fichier.write("p cnf {} {}\n" .format(maxLiterals, clauses))
 			fichier.write(tempo)
 			fichier.close()
 			"""
-			Si on a self.c = [[1, -3], [2, 3, -1]] le fichier sera le suivant :
+			Si on a self.c = [[5, -2, z],[z, a, -5],[2, -z],[-a]] le fichier sera le suivant :
 				*************************************************
 				* c language : DIMACS CNF -> for the sat solver *
-				* p cnf 3 2										*
-				* 1 -3 0										*
-				* 2 3 -1 0										*
+				* p cnf 4 2										*
+				* 1 -2 3 0										*
+				* 3 4 -1 0										*
+				* 2 -3 0										*
+				* -4 0											*
 				*												*
 				*************************************************
 			"""
