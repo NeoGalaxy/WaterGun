@@ -6,7 +6,7 @@ class Grid:
 		self.h = 0
 		self.barrier  = {'v':[], 'h':[]} # AKA. Bc and Bl in the report
 		self.values = {'v':[], 'h':[]} # AKA. Zc and Zl in the report
-		self.groups = None
+		self.groups = {}
 
 		f = open(name, "r")
 
@@ -18,9 +18,38 @@ class Grid:
 			print("Invalid format (the first line '"+grid[0]+"' correspond to no used format)")
 
 	def mkGroups(self) :
+		nbGroups = 0
 		for i in range(self.l):
 			for j in range(self.h):
-				pass
+				if (self.groups.get((i,j)) == None):
+					nbGroups += 1
+					self.groups[(i,j)] = nbGroups
+					self.addGrp(i,j)
+
+	def addGrp(sel,i,j):
+		#Begin Debug#
+		print(self.groups)
+		#End Debug"
+
+		if not(barrier(i,j,N) and self.groups.get((i,j+1)) == None):
+			self.groups[(i,j+1)] = self.groups.get((i,j))
+			self.addGrp(i,j+1)
+
+		if not(barrier(i,j,S) and self.groups.get((i,j-1)) == None):
+			self.groups[(i,j-1)] = self.groups.get((i,j))
+			self.addGrp(i,j-1)
+
+		if not(barrier(i,j,E) and self.groups.get((i+1,j)) == None):
+			self.groups[(i+1,j)] = self.groups.get((i,j))
+			self.addGrp(i+1,j)
+
+		if not(barrier(i,j,W) and self.groups.get((i-1,j)) == None):
+			self.groups[(i-1,j)] = self.groups.get((i,j))
+			self.addGrp(i-1,,j)
+
+		return self
+
+
 				
 	def get_grid(self):
 		res = "grid\n  " + ("_ " * self.l) + "\n"
