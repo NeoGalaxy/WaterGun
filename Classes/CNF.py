@@ -1,4 +1,3 @@
-from typing import List
 
 class Clause:
 	def __init__ (self, *litterals) :
@@ -27,7 +26,7 @@ class Clause:
 class CNF:
 	def __init__(self, *clauses):
 		self.dico = {}
-		self.c = []#List[Clause] # content
+		self.c = []
 		self.addClause(*clauses)
 
 	def addClause(self, *clauses):

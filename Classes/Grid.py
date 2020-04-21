@@ -3,17 +3,17 @@ class Direction:
 	SUD = 1
 	EST = 2
 	OUEST = 3
-
+(NORD, SUD, EST, OUEST) = (Direction.NORD, Direction.SUD, Direction.EST, Direction.OUEST)
 
 class Grid:
 
 	groups = []
 	def __init__(self, name):
-		self.l = 0
-		self.h = 0
-		self.barrier  = {'v':[], 'h':[]} # AKA. Bc and Bl in the report
-		self.values = {'v':[], 'h':[]} # AKA. Zc and Zl in the report
-		self.groups = {}
+		self.__l = 0
+		self.__h = 0
+		self.__barrier  = {'v':[], 'h':[]} # AKA. Bc and Bl in the report
+		self.__values = {'v':[], 'h':[]} # AKA. Zc and Zl in the report
+		self.__groups = None
 
 		f = open(name, "r")
 
@@ -26,64 +26,47 @@ class Grid:
 
 	def mkGroups(self) :
 		nbGroups = 0
-		for i in range(self.l):
-			for j in range(self.h):
-				if (self.groups.get((i,j)) == None):
+		self.__groups = [[None for i in range(self.__l)] for j in range(self.__h)]
+		for i in range(self.__l):
+			for j in range(self.__h):
+				if (self.__groups[j][i] == None):
 					nbGroups += 1
-					self.groups[(i,j)] = nbGroups
-					self.addGrp(i,j)
+					self.__addToGrp(i,j,nbGroups)
 
-	def addGrp(self,i,j):
-		#Begin Debug#
-		print(self.groups)
-		#End Debug"
 
-		if (not(self.getBarrier(i,j,Direction.NORD)) and self.groups.get((i,j+1)) == None): 
-			self.groups[(i,j+1)] = self.groups.get((i,j))
-			self.addGrp(i,j+1)
+		#return self #-> à décommenter si la valeur de retour est utilisée
 
-		if (not(self.getBarrier(i,j,Direction.SUD)) and self.groups.get((i,j-1)) == None): 
-			self.groups[(i,j-1)] = self.groups.get((i,j))
-			self.addGrp(i,j-1)
+	def getBarrier(self,i,j,o):
+		if not(0 <= i < self.__l) or not(0 <= j < self.__h) : # Oui c'est autorisé en python xD
+			raise KeyError("La case de coordonées ("+str(i)+","+str(j)+") n'existe pas.")
 
-		if (not(self.getBarrier(i,j,Direction.EST)) and self.groups.get((i+1,j)) == None): 
-			self.groups[(i+1,j)] = self.groups.get((i,j))
-			self.addGrp(i+1,j)
+		if (o == NORD) :
+			if (j == self.__h-1) : return True # Si on regarde la ligne tout en haut, forcément une "barriere" au dessus
+			return (self.__barrier["h"][self.__h-2-j][i])
 
-		if (not(self.getBarrier(i,j,Direction.OUEST)) and self.groups.get((i-1,j)) == None): 
-			self.groups[(i-1,j)] = self.groups.get((i,j))
-			self.addGrp(i-1,j)
-
-		return self
-
-		def getBarrier(self,i,j,o):
-			if (o==Direction.NORD) :
-				if (j == self.h-1) : return True # Si on regarde la ligne tout en haut, forcément une "barriere" au dessus
-				return (self.barrier.get("h")[i+1][j+1])
-
-			if (o==Direction.SUD) :
-				if (j == 0) : return True # Si on regarde la ligne tout en bas, forcément une "barriere" en dessous
-				return (self.barrier.get("h")[i+1][j])
+		if (o == SUD) :
+			if (j == 0) : return True # Si on regarde la ligne tout en bas, forcément une "barriere" en dessous
+			return (self.__barrier["h"][self.__h-1-j][i])
+			
+		if (o == EST) :
+			if (i == self.__l -1) : return True # Si on regarde la colone tout à droite, forcément un "barrière" à droite
+			return (self.__barrier["v"][self.__h-1-j][i])
+			
+		if (o == OUEST) :
+			if (i == 0) : return True # Si on regarde la colone tout à gauche, forcément une "barrière" à gauche
+			return (self.__barrier["v"][self.__h-1-j][i-1])
+			
 				
-			if (o==Direction.EST) :
-				if (i == self.l -1) : return True # Si on regarde la colone tout à droite, forcément un "barrière" à droite
-				return (self.barrier.get("v")[j][i+1])
-				
-			if (o==Direction.OUEST) :
-				if (i == 0) : return True # Si on regarde la colone tout à gauche, forcément une "barrière" à gauche
-				return (self.barrier.get("v")[j][i])
-				
-				
-	def get_grid(self):
-		res = "grid\n  " + ("_ " * self.l) + "\n"
-		for y in range(self.h):
-			res += str(self.values['h'][y]) if self.values['h'][y] != -1 else " "
+	def getGrid(self):
+		res = "grid\n  " + ("_ " * self.__l) + "\n"
+		for y in range(self.__h):
+			res += str(self.__values['h'][y]) if self.__values['h'][y] != -1 else " "
 			res += '|'
-			for x in range(self.l):
-				res += '_' if y == self.h-1 or self.barrier['h'][y][x] else ' '
-				res += '|' if x == self.l-1 or self.barrier['v'][y][x] else ' '
+			for x in range(self.__l):
+				res += '_' if y == self.__h-1 or self.__barrier['h'][y][x] else ' '
+				res += '|' if x == self.__l-1 or self.__barrier['v'][y][x] else ' '
 			res += "\n"
-		res += "  " + " ".join(str(x) if x != -1 else " " for x in self.values['v'])
+		res += "  " + " ".join(str(x) if x != -1 else " " for x in self.__values['v'])
 		return res
 
 	###################### Private methods ######################
@@ -95,13 +78,13 @@ class Grid:
 			if len(line) == 0: continue  # If the line is empty, we can skip it
 			if line[:2] == "  ":         # if the line starts by two spaces, it is either the first or last line
 				if line[2] == '_':       # It is the first line
-					self.l = len(line.split())
+					self.__l = len(line.split())
 				else :                      # It is the last line, so it has the vertical values
-					self.values["v"] = [-1 if line[x] == ' ' else int(line[x]) for x in range(2,len(line), 2)]
+					self.__values["v"] = [-1 if line[x] == ' ' else int(line[x]) for x in range(2,len(line), 2)]
 
 			else : # it is a regular line 
 				barrier = {"v":[], "h":[]}
-				self.values["h"].append(-1 if line[0] == " " else int(line.split("|")[0]))
+				self.__values["h"].append(-1 if line[0] == " " else int(line.split("|")[0]))
 				for i in range(2, len(line), 2):
 
 					if line[i] == '_':
@@ -115,14 +98,29 @@ class Grid:
 						else :
 							barrier["v"].append(False)
 
-				self.barrier["h"].append(barrier["h"])
-				self.barrier["v"].append(barrier["v"])
+				self.__barrier["h"].append(barrier["h"])
+				self.__barrier["v"].append(barrier["v"])
 
-		self.barrier["h"].pop()
-		self.h = len(self.barrier["v"])
+		self.__barrier["h"].pop()
+		self.__h = len(self.__barrier["v"])
 
+	def __addToGrp(self,i,j,n):
+		self.__groups[j][i] = n
+		self.groups = self.__groups
+		if (not(self.getBarrier(i,self.__h-1-j, SUD)) and self.__groups[j+1][i] == None): 
+			self.__addToGrp(i,j+1,n)
+
+		if (not(self.getBarrier(i,self.__h-1-j, NORD)) and self.__groups[j-1][i] == None): 
+			self.__addToGrp(i,j-1,n)
+
+		if (not(self.getBarrier(i,self.__h-1-j, EST)) and self.__groups[j][i+1] == None): 
+			self.__addToGrp(i+1,j,n)
+
+		if (not(self.getBarrier(i,self.__h-1-j, OUEST)) and self.__groups[j][i-1] == None): 
+			self.__addToGrp(i-1,j,n)
+	
 	def __str__(self):
-		return "("+str(self.l)+"x"+str(self.h)+" grid)"
+		return "("+str(self.__l)+"x"+str(self.__h)+" grid)"
 
 	def __repr__(self):
 		return self.__str__()
