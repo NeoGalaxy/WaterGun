@@ -1,3 +1,10 @@
+class Direction:
+	NORD = 0
+	SUD = 1
+	EST = 2
+	OUEST = 3
+
+
 class Grid:
 
 	groups = []
@@ -26,30 +33,46 @@ class Grid:
 					self.groups[(i,j)] = nbGroups
 					self.addGrp(i,j)
 
-	def addGrp(sel,i,j):
+	def addGrp(self,i,j):
 		#Begin Debug#
 		print(self.groups)
 		#End Debug"
 
-		if not(barrier(i,j,N) and self.groups.get((i,j+1)) == None):
+		if (not(self.getBarrier(i,j,Direction.NORD)) and self.groups.get((i,j+1)) == None): 
 			self.groups[(i,j+1)] = self.groups.get((i,j))
 			self.addGrp(i,j+1)
 
-		if not(barrier(i,j,S) and self.groups.get((i,j-1)) == None):
+		if (not(self.getBarrier(i,j,Direction.SUD)) and self.groups.get((i,j-1)) == None): 
 			self.groups[(i,j-1)] = self.groups.get((i,j))
 			self.addGrp(i,j-1)
 
-		if not(barrier(i,j,E) and self.groups.get((i+1,j)) == None):
+		if (not(self.getBarrier(i,j,Direction.EST)) and self.groups.get((i+1,j)) == None): 
 			self.groups[(i+1,j)] = self.groups.get((i,j))
 			self.addGrp(i+1,j)
 
-		if not(barrier(i,j,W) and self.groups.get((i-1,j)) == None):
+		if (not(self.getBarrier(i,j,Direction.OUEST)) and self.groups.get((i-1,j)) == None): 
 			self.groups[(i-1,j)] = self.groups.get((i,j))
-			self.addGrp(i-1,,j)
+			self.addGrp(i-1,j)
 
 		return self
 
+		def getBarrier(self,i,j,o):
+			if (o==Direction.NORD) :
+				if (j == self.h-1) : return True # Si on regarde la ligne tout en haut, forcément une "barriere" au dessus
+				return (self.barrier.get("h")[i+1][j+1])
 
+			if (o==Direction.SUD) :
+				if (j == 0) : return True # Si on regarde la ligne tout en bas, forcément une "barriere" en dessous
+				return (self.barrier.get("h")[i+1][j])
+				
+			if (o==Direction.EST) :
+				if (i == self.l -1) : return True # Si on regarde la colone tout à droite, forcément un "barrière" à droite
+				return (self.barrier.get("v")[j][i+1])
+				
+			if (o==Direction.OUEST) :
+				if (i == 0) : return True # Si on regarde la colone tout à gauche, forcément une "barrière" à gauche
+				return (self.barrier.get("v")[j][i])
+				
 				
 	def get_grid(self):
 		res = "grid\n  " + ("_ " * self.l) + "\n"
