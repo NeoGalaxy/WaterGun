@@ -8,21 +8,31 @@ class Direction:
 class Grid:
 
 	groups = []
-	def __init__(self, name):
+	def __init__(self, name, type = "Error"):
 		self.__l = 0
 		self.__h = 0
 		self.__barrier  = {'v':[], 'h':[]} # AKA. Bc and Bl in the report
 		self.__values = {'v':[], 'h':[]} # AKA. Zc and Zl in the report
 		self.__groups = None
 
-		f = open(name, "r")
+		if (type == "file") :
+			f = open(name, "r")
+			grid = f.read().split("\n")
+			f.close()
 
-		grid = f.read().split("\n")
-		f.close()
+		if (type != "liste") :
+			print ("vous devez spécifier un 'type' d'entrée ('file' ou 'liste')\n")
+		"""
+		On part du principe que sous forme de liste, on aurait :
+		liste  = ["grid","  _________  ","?|_|_| | |...", ....]
+		ce qui est équivalent au contenu de f.read().split("\n") 
+		"""
+
+
 		if grid[0] == "grid":
 			self.__readGrid(grid[1:])
 		else :
-			print("Invalid format (the first line '"+grid[0]+"' correspond to no used format)")
+			print("Invalid format (the first line '"+grid[0]+"' correspond to no used format)\n")
 
 	def mkGroups(self) :
 		nbGroups = 0
