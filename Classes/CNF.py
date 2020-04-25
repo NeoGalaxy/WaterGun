@@ -99,3 +99,5 @@ class CNF:
 
 	def __repr__(self):
 		return self.__str__()
+	def fusion (self, cnf2):
+   		return CNF(*sum((e.c for e in cnf2), self.c))
