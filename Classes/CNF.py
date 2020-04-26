@@ -42,6 +42,11 @@ class CNF:
 			)
 		return self
 
+	def fusion (self, *cnfs):
+		res = CNF(*sum((e.c for e in cnfs), self.c))
+		res.dico = self.dico.copy()
+		return res
+	
 	def ecrDimacs(self, path):
 			clauses =  len(self.c)
 			tempo = ""
@@ -99,5 +104,3 @@ class CNF:
 
 	def __repr__(self):
 		return self.__str__()
-	def fusion (self, cnf2):
-   		return CNF(*sum((e.c for e in cnf2), self.c))
