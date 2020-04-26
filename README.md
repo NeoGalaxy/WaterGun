@@ -3,7 +3,6 @@
 ## Issues
 
 - **Ajout de fonctionnalités importantes**  
-[#2](https://github.com/NeoGalaxy/INF432/issues/2) Implémenter l'algorithme de création de groupes de cases  
 [#3](https://github.com/NeoGalaxy/INF432/issues/3) Créer un CNF décrivant les règles de “water’s physics”  
 [#5](https://github.com/NeoGalaxy/INF432/issues/5) Créer un CNF décrivant les règles des valeurs au bord de la grille  
 [#7](https://github.com/NeoGalaxy/INF432/issues/7) Permettre à l'objet CNF d'écrire au format DIMACS -> Antoine  
