@@ -16,6 +16,9 @@ class Clause:
 		self.c = c
 		return self
 
+	def fusion (self, *clauses):
+		return Clause(*sum((cl.c for cl in clauses), self.c))
+
 	def __str__(self):
 		return "Cl"+str(self.c)
 
