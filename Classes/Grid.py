@@ -17,6 +17,7 @@ class Grid:
 		self.__barrier  = {'v':[], 'h':[]} # AKA. Bc and Bl in the report
 		self.__values = {'v':[], 'h':[]} # AKA. Zc and Zl in the report
 		self.__groups = None
+		self.__waterPhysicsCNF =  CNF() #déclaration d'un CNF vide
 		self.barrier = self.__barrier
 		self.values = self.__values
 
@@ -42,6 +43,8 @@ class Grid:
 			self.__readGrid(grid[1:])
 		else :
 			raise ValueError("Invalid format (the first line '"+grid[0]+"' does not correspond to grid1).\n")
+
+		self.__createWaterPhysic()
 
 	def mkGroups(self) :
 		nbGroups = 0
@@ -173,8 +176,18 @@ class Grid:
 		else:
 			raise ValueError("The last line should contain only digits and spaces.")
 
+	def __createWaterPhysic(self) :
+		a,b,x,y = 0,0,0,0
+		for a in range (0, self.__l):
+			for b in range (0, self.__h):
+				for x in range (0, self.__l):
+					for y in range(0, b+1):
+						if (self.__groups[a][b] == self.__groups[x][y]) :
+							self.__waterPhysicsCNF.addClause("-"+str(a)+","+str(b) , str(x)+","+str(y))
+
 	def __str__(self):
 		return "("+str(self.__l)+"x"+str(self.__h)+" grid)"
 
 	def __repr__(self):
 		return self.__str__()
+
