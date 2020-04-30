@@ -1,7 +1,7 @@
 from classes import Grid, Direction
 (NORD, SUD, EST, OUEST) = (Direction.NORD, Direction.SUD, Direction.EST, Direction.OUEST)
 
-grille = Grid("../Inputs/Grids/grid1.txt")
+grille = Grid("../Inputs/Grids/Probs/grid1.grid")
 print("Grille : \n", grille.getGrid(),"\n")
 
 print("NORD de chaque case : ")

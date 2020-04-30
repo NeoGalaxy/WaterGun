@@ -101,6 +101,10 @@ class CNF:
 				*************************************************
 			"""
 
+	def copy(self) :
+		res = CNF(*self.c)
+		res.dico = self.dico.copy()
+		return res
 
 	def __str__(self):
 		return ("CNF{"+", ".join([str(x) for x in self.c])+"}")

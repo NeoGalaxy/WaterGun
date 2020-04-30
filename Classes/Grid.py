@@ -1,4 +1,5 @@
 import io
+import warnings
 from itertools import groupby as gb
 from .CNF import CNF
 
@@ -11,16 +12,13 @@ class Direction:
 
 class Grid:
 
-	groups = []
 	def __init__(self, arg):
 		self.__l = 0
 		self.__h = 0
 		self.__barrier  = {'v':[], 'h':[]} # AKA. Bc and Bl in the report
 		self.__values = {'v':[], 'h':[]} # AKA. Zc and Zl in the report
 		self.__groups = None
-		#self.__waterPhysicsCNF =  CNF() #déclaration d'un CNF vide
-		self.barrier = self.__barrier
-		self.values = self.__values
+		self.__waterPhysicsCNF = None
 
 		try:
 			if (type(arg) == io.TextIOWrapper) :
@@ -44,21 +42,12 @@ class Grid:
 			self.__readGrid(grid[1:])
 		else :
 			raise ValueError("Invalid format (the first line '"+grid[0]+"' does not correspond to grid1).\n")
-		self.mkGroups()
-		#self.__createWaterPhysic()
+		self.__mkGroups()
+		self.__waterPhysicsCNF = self.__getWaterPhys()
 
 
-	def mkGroups(self) :
-		nbGroups = 0
-		self.__groups = [[None for i in range(self.__l)] for j in range(self.__h)]
-		for i in range(self.__l):
-			for j in range(self.__h):
-				if (self.__groups[j][i] == None):
-					nbGroups += 1
-					self.__addToGrp(i,j,nbGroups)
 
-		return self #-> allow to do: grille = Grid(arg).mkGroups()
-
+	"""Says if there is a barrier on the o border of the tile (i,j)"""
 	def getBarrier(self,i,j,o):
 		if not(0 <= i < self.__l) or not(0 <= j < self.__h) : # Yes, it is allowed in python xD
 			raise KeyError("The node of coordinates ("+str(i)+","+str(j)+") doesn't exist.")
@@ -79,7 +68,7 @@ class Grid:
 			if (i == 0) : return True # The line on the right always have a barrier on its right
 			return (self.__barrier["v"][self.__h-1-j][i-1])
 			
-				
+	"""Gives a string representing the grid"""
 	def getGrid(self):
 		res = "grid\n  " + ("_ " * self.__l) + "\n"
 		for y in range(self.__h):
@@ -93,34 +82,26 @@ class Grid:
 		return res
 
 	def getGroup(self,x,y) :
-		return self.__groups[self.__h-y-1][x]
+		if self.__groups == None:
+			raise NotImplementedError("Not working untill .mkGroups() is not sucessfully run.")
+		try:
+			return self.__groups[self.__h-y-1][x]
+		except IndexError as e:
+			warnings.warn("The index is out of the grid, returning 0.",RuntimeWarning,2)
+			return 0
 
-	""" algo :
-		my_CNF=create_CNF_vide()
-		for all case1[x1][y] in grille :
-			if case[x1][y-1] is in the same group as case1 then:
-				add (-[x1,y] + [x1,y-1]) to my_CNF (i.e case[x1,y] => case[x1,y-1])
-
-			for all case2[x2][y] different from case1:
-				if case2 is in the same group as case1 then:
-					add (-[x1,y] + [x2,y]) to my_CNF (i.e case[x1,y] => case[x2,y])
-
-	"""
 	def getWaterPhys(self) :
-		myCNF = CNF()
-		for x,y in ((i,j) for j in range (0, self.__h) for i in range (0, self.__l) ):
-			if y > 0 and self.getGroup(x,y) == self.getGroup(x,y-1) :
-				myCNF.addClause(["-"+str(x)+","+str(y) , str(x)+","+str(y-1)])
-			
-			for x2 in range (0, self.__l):
-				if x != x2 and (self.getGroup(x,y) == self.getGroup(x2,y)) :
-					myCNF.addClause(["-"+str(x)+","+str(y) , str(x2)+","+str(y)])
+		return self.__waterPhysicsCNF.copy()
 
-		return myCNF
+	def h(self) :
+		return self.__h
+
+	def l(self) :
+		return self.__l
 
 	###################### Private methods ######################
 
-	"""ajoute (i,j) au groupe n"""
+	"""Parse the intarable textLines into a grid"""
 	def __readGrid(self, textLines):
 		colsIndex = None
 		for line in textLines:
@@ -178,7 +159,7 @@ class Grid:
 		self.__barrier["h"].pop()
 		self.__h = len(self.__barrier["v"])
 
-	"""ajoute (i,j) au groupe n"""
+	"""add (i,j) the the group n"""
 	def __addToGrp(self,i,j,n):
 		self.__groups[j][i] = n
 		self.groups = self.__groups
@@ -194,7 +175,17 @@ class Grid:
 		if (not(self.getBarrier(i,self.__h-1-j, OUEST)) and self.__groups[j][i-1] == None): 
 			self.__addToGrp(i-1,j,n)
 	
-	"""Parse une valeur sur le bord d'une grille"""
+	"""Group the tiles of the grid"""
+	def __mkGroups(self) :
+		nbGroups = 0
+		self.__groups = [[None for i in range(self.__l)] for j in range(self.__h)]
+		for i in range(self.__l):
+			for j in range(self.__h):
+				if (self.__groups[j][i] == None):
+					nbGroups += 1
+					self.__addToGrp(i,j,nbGroups)
+
+	"""Parse a value on the border of the grid"""
 	def __strToVal(self, elem, s) :
 		elem = elem.strip()
 		if elem == "":
@@ -207,6 +198,28 @@ class Grid:
 		else:
 			raise ValueError("The last line should contain only digits and spaces.")
 
+	""" algo :
+		my_CNF=create_CNF_vide()
+		for all case1[x1][y] in grille :
+			if case[x1][y-1] is in the same group as case1 then:
+				add (-[x1,y] + [x1,y-1]) to my_CNF (i.e case[x1,y] => case[x1,y-1])
+
+			for all case2[x2][y] different from case1:
+				if case2 is in the same group as case1 then:
+					add (-[x1,y] + [x2,y]) to my_CNF (i.e case[x1,y] => case[x2,y])
+
+	"""
+	def __getWaterPhys(self) :
+		myCNF = CNF()
+		for x,y in ((i,j) for j in range (0, self.__h) for i in range (0, self.__l) ):
+			if y > 0 and self.getGroup(x,y) == self.getGroup(x,y-1) :
+				myCNF.addClause(["-"+str(x)+","+str(y) , str(x)+","+str(y-1)])
+			
+			for x2 in range (0, self.__l):
+				if x != x2 and (self.getGroup(x,y) == self.getGroup(x2,y)) :
+					myCNF.addClause(["-"+str(x)+","+str(y) , str(x2)+","+str(y)])
+
+		return myCNF
 
 	def __str__(self):
 		return "("+str(self.__l)+"x"+str(self.__h)+" grid)"

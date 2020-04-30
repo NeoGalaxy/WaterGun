@@ -6,7 +6,6 @@ grille = Grid("../Inputs/Grids/Probs/grid1.grid")
 print(grille) # -> "(6x6 grid)"
 #print("C'est une grille ",grille.l,"par", grille.h) # affiche la largeur et la hauteur de grille
 print(grille.getGrid()) # affiche la grille au format grid
-print(grille.barrier)
 
 from classes import CNF
 
