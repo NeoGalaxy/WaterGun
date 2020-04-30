@@ -1,5 +1,6 @@
 import io
 from itertools import groupby as gb
+from .CNF import CNF
 
 class Direction:
 	NORD = 0
@@ -17,7 +18,7 @@ class Grid:
 		self.__barrier  = {'v':[], 'h':[]} # AKA. Bc and Bl in the report
 		self.__values = {'v':[], 'h':[]} # AKA. Zc and Zl in the report
 		self.__groups = None
-		self.__waterPhysicsCNF =  CNF() #déclaration d'un CNF vide
+		#self.__waterPhysicsCNF =  CNF() #déclaration d'un CNF vide
 		self.barrier = self.__barrier
 		self.values = self.__values
 
@@ -43,8 +44,9 @@ class Grid:
 			self.__readGrid(grid[1:])
 		else :
 			raise ValueError("Invalid format (the first line '"+grid[0]+"' does not correspond to grid1).\n")
+		self.mkGroups()
+		#self.__createWaterPhysic()
 
-		self.__createWaterPhysic()
 
 	def mkGroups(self) :
 		nbGroups = 0
@@ -90,8 +92,35 @@ class Grid:
 		res += "  " + " ".join(str(x) if x != -1 else " " for x in self.__values['v'])
 		return res
 
+	def getGroup(self,x,y) :
+		return self.__groups[self.__h-y-1][x]
+
+	""" algo :
+		my_CNF=create_CNF_vide()
+		for all case1[x1][y] in grille :
+			if case[x1][y-1] is in the same group as case1 then:
+				add (-[x1,y] + [x1,y-1]) to my_CNF (i.e case[x1,y] => case[x1,y-1])
+
+			for all case2[x2][y] different from case1:
+				if case2 is in the same group as case1 then:
+					add (-[x1,y] + [x2,y]) to my_CNF (i.e case[x1,y] => case[x2,y])
+
+	"""
+	def getWaterPhys(self) :
+		myCNF = CNF()
+		for x,y in ((i,j) for j in range (0, self.__h) for i in range (0, self.__l) ):
+			if y > 0 and self.getGroup(x,y) == self.getGroup(x,y-1) :
+				myCNF.addClause(["-"+str(x)+","+str(y) , str(x)+","+str(y-1)])
+			
+			for x2 in range (0, self.__l):
+				if x != x2 and (self.getGroup(x,y) == self.getGroup(x2,y)) :
+					myCNF.addClause(["-"+str(x)+","+str(y) , str(x2)+","+str(y)])
+
+		return myCNF
+
 	###################### Private methods ######################
 
+	"""ajoute (i,j) au groupe n"""
 	def __readGrid(self, textLines):
 		colsIndex = None
 		for line in textLines:
@@ -149,6 +178,7 @@ class Grid:
 		self.__barrier["h"].pop()
 		self.__h = len(self.__barrier["v"])
 
+	"""ajoute (i,j) au groupe n"""
 	def __addToGrp(self,i,j,n):
 		self.__groups[j][i] = n
 		self.groups = self.__groups
@@ -164,6 +194,7 @@ class Grid:
 		if (not(self.getBarrier(i,self.__h-1-j, OUEST)) and self.__groups[j][i-1] == None): 
 			self.__addToGrp(i-1,j,n)
 	
+	"""Parse une valeur sur le bord d'une grille"""
 	def __strToVal(self, elem, s) :
 		elem = elem.strip()
 		if elem == "":
@@ -176,14 +207,6 @@ class Grid:
 		else:
 			raise ValueError("The last line should contain only digits and spaces.")
 
-	def __createWaterPhysic(self) :
-		a,b,x,y = 0,0,0,0
-		for a in range (0, self.__l):
-			for b in range (0, self.__h):
-				for x in range (0, self.__l):
-					for y in range(0, b+1):
-						if (self.__groups[a][b] == self.__groups[x][y]) :
-							self.__waterPhysicsCNF.addClause("-"+str(a)+","+str(b) , str(x)+","+str(y))
 
 	def __str__(self):
 		return "("+str(self.__l)+"x"+str(self.__h)+" grid)"
