@@ -2,10 +2,6 @@
 
 ## Issues
 
-- **Ajout de fonctionnalités importantes**  
-[#3](https://github.com/NeoGalaxy/INF432/issues/3) Créer un CNF décrivant les règles de “water’s physics”  
-[#5](https://github.com/NeoGalaxy/INF432/issues/5) Créer un CNF décrivant les règles des valeurs au bord de la grille  
-
 - **Discussions**  
 [#6](https://github.com/NeoGalaxy/INF432/issues/6) Choisir ENSEMBLE une convention pour nommer Wi,j dans l'objet CNF  
 [#8](https://github.com/NeoGalaxy/INF432/issues/8) Créer et modifier les formats d'entrée pour la classe Grid  

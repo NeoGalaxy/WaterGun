@@ -1,6 +1,7 @@
 import io
 import warnings
 from itertools import groupby as gb
+from itertools import combinations
 from .CNF import CNF
 
 class Direction:
@@ -44,6 +45,7 @@ class Grid:
 			raise ValueError("Invalid format (the first line '"+grid[0]+"' does not correspond to grid1).\n")
 		self.__mkGroups()
 		self.__waterPhysicsCNF = self.__getWaterPhys()
+		self.__tilesNbCNF = self.__getTilesNbCNF()
 
 
 
@@ -67,7 +69,15 @@ class Grid:
 		if (o == OUEST) :
 			if (i == 0) : return True # The line on the right always have a barrier on its right
 			return (self.__barrier["v"][self.__h-1-j][i-1])
-			
+
+	"""Says the value of the vectical line"""
+	def getValVert(self,i):
+		return self.__values["v"][i]
+
+	"""Says the value of the horizontal line"""
+	def getValHor(self,j):
+		return self.__values["h"][self.h()-j-1]
+
 	"""Gives a string representing the grid"""
 	def getGrid(self):
 		res = "grid\n  " + ("_ " * self.__l) + "\n"
@@ -93,13 +103,67 @@ class Grid:
 	def getWaterPhys(self) :
 		return self.__waterPhysicsCNF.copy()
 
+	def getTilesNbCNF(self) :
+		return self.__tilesNbCNF.copy()
+
 	def h(self) :
 		return self.__h
 
 	def l(self) :
 		return self.__l
 
-	###################### Private methods ######################
+	#########################################################################
+	############################ Private methods ############################
+	#########################################################################
+
+	#======================   From Grid to CNF   ======================#
+
+	""" algo :
+		my_CNF=create_CNF_vide()
+		for all case1[x1][y] in grille :
+			if case[x1][y-1] is in the same group as case1 then:
+				add (-[x1,y] + [x1,y-1]) to my_CNF (i.e case[x1,y] => case[x1,y-1])
+
+			for all case2[x2][y] different from case1:
+				if case2 is in the same group as case1 then:
+					add (-[x1,y] + [x2,y]) to my_CNF (i.e case[x1,y] => case[x2,y])
+
+	"""
+	def __getWaterPhys(self) :
+		myCNF = CNF()
+		for x,y in ((i,j) for j in range (0, self.__h) for i in range (0, self.__l) ):
+			if y > 0 and self.getGroup(x,y) == self.getGroup(x,y-1) :
+				myCNF.addClause(["-"+str(x)+","+str(y) , str(x)+","+str(y-1)])
+			
+			for x2 in range (0, self.__l):
+				if x != x2 and (self.getGroup(x,y) == self.getGroup(x2,y)) :
+					myCNF.addClause(["-"+str(x)+","+str(y) , str(x2)+","+str(y)])
+
+		return myCNF
+
+
+	def __getTilesNbCNF(self) :
+		myCNF = CNF()
+		for y in range(self.h()):
+			hVal = self.getValHor(y)
+			if hVal == -1: continue # On saute les lignes qui n'ont pas de val
+			for indexes in combinations(range(self.l()), self.l()-hVal+1):
+				myCNF.addClause([str(i)+","+str(y) for i in indexes])
+			for indexes in combinations(range(self.l()), hVal+1):
+				myCNF.addClause(["-"+str(i)+","+str(y) for i in indexes])
+
+		for x in range(self.l()):
+			vVal = self.getValVert(x)
+			if vVal == -1: continue # On saute les lignes qui n'ont pas de val
+			for indexes in combinations(range(self.h()), self.h()-vVal+1):
+				myCNF.addClause([str(x)+","+str(i) for i in indexes])
+			for indexes in combinations(range(self.h()), vVal+1):
+				myCNF.addClause(["-"+str(x)+","+str(i) for i in indexes])
+
+		return myCNF
+
+
+	#======================   Utilities   ======================#
 
 	"""Parse the intarable textLines into a grid"""
 	def __readGrid(self, textLines):
@@ -198,28 +262,7 @@ class Grid:
 		else:
 			raise ValueError("The last line should contain only digits and spaces.")
 
-	""" algo :
-		my_CNF=create_CNF_vide()
-		for all case1[x1][y] in grille :
-			if case[x1][y-1] is in the same group as case1 then:
-				add (-[x1,y] + [x1,y-1]) to my_CNF (i.e case[x1,y] => case[x1,y-1])
 
-			for all case2[x2][y] different from case1:
-				if case2 is in the same group as case1 then:
-					add (-[x1,y] + [x2,y]) to my_CNF (i.e case[x1,y] => case[x2,y])
-
-	"""
-	def __getWaterPhys(self) :
-		myCNF = CNF()
-		for x,y in ((i,j) for j in range (0, self.__h) for i in range (0, self.__l) ):
-			if y > 0 and self.getGroup(x,y) == self.getGroup(x,y-1) :
-				myCNF.addClause(["-"+str(x)+","+str(y) , str(x)+","+str(y-1)])
-			
-			for x2 in range (0, self.__l):
-				if x != x2 and (self.getGroup(x,y) == self.getGroup(x2,y)) :
-					myCNF.addClause(["-"+str(x)+","+str(y) , str(x2)+","+str(y)])
-
-		return myCNF
 
 	def __str__(self):
 		return "("+str(self.__l)+"x"+str(self.__h)+" grid)"
