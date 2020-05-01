@@ -12,7 +12,6 @@ class Direction:
 (NORD, SUD, EST, OUEST) = (Direction.NORD, Direction.SUD, Direction.EST, Direction.OUEST)
 
 class Grid:
-
 	def __init__(self, arg):
 		self.__l = 0
 		self.__h = 0
@@ -22,6 +21,7 @@ class Grid:
 		self.__waterPhysicsCNF = None
 		self.__tilesNbCNF = None
 		self.__cnf = None
+		self.__solutions = None
 
 		try:
 			if (type(arg) == io.TextIOWrapper) :
@@ -104,13 +104,34 @@ class Grid:
 			return 0
 
 	def getWaterPhys(self) :
+		if self.__waterPhysicsCNF == None: return None
 		return self.__waterPhysicsCNF.copy()
 
 	def getTilesNbCNF(self) :
+		if self.__tilesNbCNF == None: return None
 		return self.__tilesNbCNF.copy()
 
 	def getCNF(self) :
+		if self.__cnf == None: return None
 		return self.__cnf.copy()
+
+	def getSolution(self):
+		if self.__cnf == None:
+			raise NotImplementedError("The CNF is not generated yet")
+		return self.__cnf.solve()
+
+	def getNextSolution(self):
+		try:
+			return self.__next__()
+		except StopIteration as e:
+			self.__solutions = None
+			return None
+
+	def getAllSolutions(self):
+		return self.__cnf.itersolve()
+
+	def getListSolutions(self):
+		return list(self.__cnf.itersolve())
 
 	def h(self) :
 		return self.__h
@@ -122,7 +143,7 @@ class Grid:
 	############################ Private methods ############################
 	#########################################################################
 
-	#======================   From Grid to CNF   ======================#
+	#======================#   From Grid to CNF   #======================#
 
 	""" algo :
 		my_CNF=create_CNF_vide()
@@ -169,7 +190,7 @@ class Grid:
 		return myCNF
 
 
-	#======================   Utilities   ======================#
+	#======================#   Utilities   #======================#
 
 	"""Parse the intarable textLines into a grid"""
 	def __readGrid(self, textLines):
@@ -268,6 +289,12 @@ class Grid:
 		else:
 			raise ValueError("The last line should contain only digits and spaces.")
 
+	def __next__(self):
+		if self.__cnf == None:
+			raise NotImplementedError("The CNF is not generated yet")
+		if self.__solutions == None:
+			self.__solutions = self.__cnf.itersolve()
+		return next(self.__solutions)
 
 
 	def __str__(self):
