@@ -21,7 +21,7 @@ class Grid:
 		self.__groups = None
 		self.__waterPhysicsCNF = None
 		self.__tilesNbCNF = None
-		self.cnf = None
+		self.__cnf = None
 
 		try:
 			if (type(arg) == io.TextIOWrapper) :
@@ -48,7 +48,7 @@ class Grid:
 		self.__mkGroups()
 		self.__waterPhysicsCNF = self.__getWaterPhys()
 		self.__tilesNbCNF = self.__getTilesNbCNF()
-		self.cnf = getWaterPhys().fusion(self.__tilesNbCNF)
+		self.__cnf = self.__waterPhysicsCNF.fusion(self.__tilesNbCNF)
 
 
 
@@ -108,6 +108,9 @@ class Grid:
 
 	def getTilesNbCNF(self) :
 		return self.__tilesNbCNF.copy()
+
+	def getCNF(self) :
+		return self.__cnf.copy()
 
 	def h(self) :
 		return self.__h
