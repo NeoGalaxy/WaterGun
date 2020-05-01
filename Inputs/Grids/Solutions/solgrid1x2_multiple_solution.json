@@ -1,8 +1,7 @@
 {
-	"path" : "/Grids/Inputs/Probs/grid1x1_multiple_solution",
-	"solution" : [
+	"path": "/Inputs/Grids/Probs/grid1x1_multiple_solution.grid",
+	"solution": [
 		[[0,0]],
-		
 		[[0,1]]
 	]
 }

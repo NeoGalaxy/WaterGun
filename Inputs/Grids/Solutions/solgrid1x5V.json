@@ -1,6 +1,6 @@
 {
-"path" : "/Grids/Inputs/Probs/grid1x5V",
-	"solution" : [
+	"path": "/Inputs/Grids/Probs/grid1x5V.grid",
+	"solution": [
 		[[0,0],[0,1],[0,3]]
 	]
 }
