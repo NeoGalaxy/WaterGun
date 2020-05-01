@@ -20,6 +20,8 @@ class Grid:
 		self.__values = {'v':[], 'h':[]} # AKA. Zc and Zl in the report
 		self.__groups = None
 		self.__waterPhysicsCNF = None
+		self.__tilesNbCNF = None
+		self.cnf = None
 
 		try:
 			if (type(arg) == io.TextIOWrapper) :
@@ -46,6 +48,7 @@ class Grid:
 		self.__mkGroups()
 		self.__waterPhysicsCNF = self.__getWaterPhys()
 		self.__tilesNbCNF = self.__getTilesNbCNF()
+		self.cnf = getWaterPhys().fusion(self.__tilesNbCNF)
 
 
 
