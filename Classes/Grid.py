@@ -133,6 +133,99 @@ class Grid:
 	def getListSolutions(self):
 		return list(self.__cnf.itersolve())
 
+	"""Transform the solution into an svg picture, written in the file f. The solution should be an array of litterals of the form 'x,y' or '-x,y'."""
+	def solToSvg(self, sol, f):
+		f.write('<?xml version="1.1" encoding="UTF-8"?>\n')
+		length = self.l()
+		height = self.h()
+
+		### Cases
+		f.write('<svg width="{}" height="{}" viewBox="-1 -1 {} {}">\n'.format(100*(length+2),100*(height+2),(length+2),(height+2)))
+		f.write('\t<rect x="-1" y="-1" width="100%" height="100%" fill="white"/>\n')
+
+		f.write('\t<g>\n')
+		for case in sol:
+			if case[0] == "-":
+				case = case[1:]
+				color = "#b3b3b0"
+			else: 
+				color = "#038"
+			(x,y) = (int(i) for i in case.split(","))
+			f.write('\t\t<rect x="{}" y="{}" width="1" height="1" fill="{}"/>\n'.format(x,height - y -1,color))
+		f.write('\t</g>\n')
+
+		### Murs
+		f.write('\t<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 0 0 L 0 {}" />\n'.format(height))
+		f.write('\t<g>\n')
+		for x,y in ((i,j) for i in range(length) for j in range(height)):
+			if self.getBarrier(x,y,SUD):
+				f.write('\t\t<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M {} {} L {} {}" />\n'.format(x,height-y,x+1,height-y))
+			if self.getBarrier(x,y,EST):
+				f.write('\t\t<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M {} {} L {} {}" />\n'.format(x+1,height-y,x+1,height-(y+1)))
+		f.write('\t</g>\n')
+
+		### Valeurs
+		f.write('\t<g>\n')
+		for i in range(len(self.__values['v'])):
+			val = self.__values['v'][i]
+			if val != -1:
+				f.write('\t\t<text x="{}" y="{}" font-size="1">{}</text>\n'.format(i+0.25,height+1,val))
+		f.write('\t</g>\n')
+		f.write('\t<g>\n')
+		for j in range(len(self.__values['h'])):
+			val = self.__values['h'][j]
+			if val != -1:
+				f.write('\t\t<text x="{}" y="{}" font-size="1">{}</text>\n'.format(length+0.25,j+0.9,val))
+		f.write('\t</g>\n')
+		f.write('</svg>\n')
+
+	"""Transform the solution into a string in svg format. The solution should be an array of litterals of the form 'x,y' or '-x,y'."""
+	def solToSvgs(self, sol):
+		svg = '<?xml version="1.1" encoding="UTF-8"?>\n'
+		length = self.l()
+		height = self.h()
+
+		### Cases
+		svg += '<svg width="{}" height="{}" viewBox="-1 -1 {} {}">\n'.format(100*(length+2),100*(height+2),(length+2),(height+2))
+		svg += '\t<rect x="-1" y="-1" width="100%" height="100%" fill="white"/>\n'
+
+		svg += '\t<g>\n'
+		for case in sol:
+			if case[0] == "-":
+				case = case[1:]
+				color = "#b3b3b0"
+			else: 
+				color = "#038"
+			(x,y) = (int(i) for i in case.split(","))
+			svg += '\t\t<rect x="{}" y="{}" width="1" height="1" fill="{}"/>\n'.format(x,height - y -1,color)
+		svg += '\t</g>\n'
+
+		### Murs
+		svg += '\t<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 0 0 L 0 {}" />\n'.format(height)
+		svg += '\t<g>\n'
+		for x,y in ((i,j) for i in range(length) for j in range(height)):
+			if self.getBarrier(x,y,SUD):
+				svg += '\t\t<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M {} {} L {} {}" />\n'.format(x,height-y,x+1,height-y)
+			if self.getBarrier(x,y,EST):
+				svg += '\t\t<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M {} {} L {} {}" />\n'.format(x+1,height-y,x+1,height-(y+1))
+		svg += '\t</g>\n'
+
+		### Valeurs
+		svg += ('\t<g>\n')
+		for i in range(len(self.__values['v'])):
+			val = self.__values['v'][i]
+			if val != -1:
+				svg += ('\t\t<text x="{}" y="{}" font-size="1">{}</text>\n'.format(i+0.25,height+0.9,val))
+		svg += ('\t</g>\n')
+		svg += ('\t<g>\n')
+		for j in range(len(self.__values['h'])):
+			val = self.__values['h'][j]
+			if val != -1:
+				svg += ('\t\t<text x="{}" y="{}" font-size="1">{}</text>\n'.format(length+0.25,j+0.9,val))
+		svg += '\t</g>\n'
+		svg += '</svg>\n'
+		return svg
+
 	def h(self) :
 		return self.__h
 

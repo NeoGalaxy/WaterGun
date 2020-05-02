@@ -3,7 +3,6 @@
 ## Issues
 
 - **Discussions**  
-[#6](https://github.com/NeoGalaxy/INF432/issues/6) Choisir ENSEMBLE une convention pour nommer Wi,j dans l'objet CNF  
 [#8](https://github.com/NeoGalaxy/INF432/issues/8) Créer et modifier les formats d'entrée pour la classe Grid  
 
 - **Ajout de fonctionnalités utiles**  
