@@ -1,0 +1,75 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<svg width="700" height="800" viewBox="-1 -1 7 8">
+	<rect x="-1" y="-1" width="100%" height="100%" fill="white"/>
+	<g>
+		<rect x="0" y="5" width="1" height="1" fill="#038"/>
+		<rect x="4" y="5" width="1" height="1" fill="#038"/>
+		<rect x="1" y="5" width="1" height="1" fill="#b3b3b0"/>
+		<rect x="2" y="5" width="1" height="1" fill="#b3b3b0"/>
+		<rect x="3" y="5" width="1" height="1" fill="#b3b3b0"/>
+		<rect x="0" y="4" width="1" height="1" fill="#038"/>
+		<rect x="1" y="4" width="1" height="1" fill="#038"/>
+		<rect x="2" y="4" width="1" height="1" fill="#038"/>
+		<rect x="4" y="4" width="1" height="1" fill="#038"/>
+		<rect x="3" y="4" width="1" height="1" fill="#b3b3b0"/>
+		<rect x="0" y="3" width="1" height="1" fill="#b3b3b0"/>
+		<rect x="2" y="3" width="1" height="1" fill="#b3b3b0"/>
+		<rect x="3" y="3" width="1" height="1" fill="#b3b3b0"/>
+		<rect x="4" y="3" width="1" height="1" fill="#b3b3b0"/>
+		<rect x="0" y="2" width="1" height="1" fill="#038"/>
+		<rect x="1" y="2" width="1" height="1" fill="#038"/>
+		<rect x="1" y="3" width="1" height="1" fill="#038"/>
+		<rect x="2" y="2" width="1" height="1" fill="#b3b3b0"/>
+		<rect x="3" y="2" width="1" height="1" fill="#b3b3b0"/>
+		<rect x="4" y="2" width="1" height="1" fill="#b3b3b0"/>
+		<rect x="0" y="1" width="1" height="1" fill="#b3b3b0"/>
+		<rect x="1" y="1" width="1" height="1" fill="#b3b3b0"/>
+		<rect x="2" y="1" width="1" height="1" fill="#b3b3b0"/>
+		<rect x="3" y="1" width="1" height="1" fill="#b3b3b0"/>
+		<rect x="0" y="0" width="1" height="1" fill="#b3b3b0"/>
+		<rect x="1" y="0" width="1" height="1" fill="#b3b3b0"/>
+		<rect x="2" y="0" width="1" height="1" fill="#b3b3b0"/>
+		<rect x="3" y="0" width="1" height="1" fill="#b3b3b0"/>
+		<rect x="4" y="0" width="1" height="1" fill="#b3b3b0"/>
+		<rect x="4" y="1" width="1" height="1" fill="#038"/>
+	</g>
+	<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 0 0 L 0 6" />
+	<g>
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 0 6 L 1 6" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 1 6 L 1 5" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 1 4 L 1 3" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 0 3 L 1 3" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 1 6 L 2 6" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 1 5 L 2 5" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 1 4 L 2 4" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 2 4 L 2 3" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 2 3 L 2 2" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 2 6 L 3 6" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 2 5 L 3 5" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 3 5 L 3 4" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 2 2 L 3 2" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 3 2 L 3 1" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 3 1 L 3 0" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 3 6 L 4 6" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 4 6 L 4 5" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 4 5 L 4 4" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 3 4 L 4 4" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 4 2 L 4 1" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 4 1 L 4 0" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 4 6 L 5 6" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 5 6 L 5 5" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 5 5 L 5 4" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 5 4 L 5 3" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 5 3 L 5 2" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 4 2 L 5 2" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 5 2 L 5 1" />
+		<path stroke="black" stroke-linecap="round" stroke-width="0.1" d="M 5 1 L 5 0" />
+	</g>
+	<g>
+		<text x="3.25" y="7" font-size="1">0</text>
+	</g>
+	<g>
+		<text x="5.25" y="1.9" font-size="1">1</text>
+		<text x="5.25" y="4.9" font-size="1">4</text>
+	</g>
+</svg>

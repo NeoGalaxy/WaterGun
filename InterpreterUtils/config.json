@@ -1,0 +1,6 @@
+{
+	"gridsPath": "Inputs/Grids/Probs",
+	"svgOutPath": "Outputs",
+	"openSvg": "eog",
+	"width": 100
+}
