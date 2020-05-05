@@ -51,8 +51,8 @@ def load(arg):
 		f = open(os.path.join(config["gridsPath"], fname)) 
 		newGrid = Grid(f)
 		f.close()
-	except FileNotFoundError as e:
-		raise mio.caught("Error : file not found")
+	except (FileNotFoundError, IsADirectoryError) as e:
+		raise mio.caught("Error : file '"+fname+"' not found the directory '"+config["gridsPath"]+"'\n(You can change the directory in the configurations)")
 	except ValueError as e:
 		raise mio.caught(str(e))
 	else : 
@@ -98,7 +98,7 @@ def export(arg, ask = True):
 
 	try:
 		f = open(os.path.join(config["svgOutPath"], fname), "w") 
-		current.solToSvg([],f)
+		current.writeSvg([],f)
 		f.close()
 	except ValueError as e:
 		raise mio.caught(str(e))
@@ -138,7 +138,7 @@ def solve(arg, ask = True):
 
 	try:
 		f = open(os.path.join(config["svgOutPath"], fname), "w") 
-		current.solToSvg(s,f)
+		current.writeSvg(s,f)
 		f.close()
 	except ValueError as e:
 		raise mio.caught(str(e))

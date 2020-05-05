@@ -83,7 +83,7 @@ class Grid:
 
 	"""Gives a string representing the grid"""
 	def getGrid(self):
-		res = "grid\n  " + ("_ " * self.__l) + "\n"
+		res = "grid1\n#Automacically generated grid\n  " + ("_ " * self.__l) + "\n"
 		for y in range(self.__h):
 			res += str(self.__values['h'][y]) if self.__values['h'][y] != -1 else " "
 			res += '|'
@@ -130,11 +130,8 @@ class Grid:
 	def getAllSolutions(self):
 		return self.__cnf.itersolve()
 
-	def getListSolutions(self):
-		return list(self.__cnf.itersolve())
-
 	"""Transform the solution into an svg picture, written in the file f. The solution should be an array of litterals of the form 'x,y' or '-x,y'."""
-	def solToSvg(self, sol, f):
+	def writeSvg(self,f, sol = []):
 		f.write('<?xml version="1.1" encoding="UTF-8"?>\n')
 		length = self.l()
 		height = self.h()
@@ -180,7 +177,7 @@ class Grid:
 		f.write('</svg>\n')
 
 	"""Transform the solution into a string in svg format. The solution should be an array of litterals of the form 'x,y' or '-x,y'."""
-	def solToSvgs(self, sol):
+	def writeSvgs(self, sol = []):
 		svg = '<?xml version="1.1" encoding="UTF-8"?>\n'
 		length = self.l()
 		height = self.h()
@@ -389,6 +386,7 @@ class Grid:
 			self.__solutions = self.__cnf.itersolve()
 		return next(self.__solutions)
 
+	def __iter__(self): return self.getAllSolutions()
 
 	def __str__(self):
 		return "("+str(self.__l)+"x"+str(self.__h)+" grid)"

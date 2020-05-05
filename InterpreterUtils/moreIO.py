@@ -1,5 +1,3 @@
-from .config import Config as cnfg
-
 class CaughtError(Exception):
 	pass
 
@@ -46,7 +44,7 @@ class MoreIO:
 					raise(e)
 	
 	@staticmethod
-	def readNum(prompt, isFloat = True, error = "Error : the input should be a number.", hasSpecials = False, specials = {}):
+	def readNum(prompt, isFloat = True, error = "Error : the input should be a number.", hasText = False, specials = {}):
 		def check(n) :
 			if n in specials : return specials[n]
 			else : return float(n) if isFloat else int(n)
@@ -56,7 +54,7 @@ class MoreIO:
 			if num[0] == "":
 				continue
 			try:
-				if hasSpecials:
+				if hasText:
 					num.append("")
 					return (check(num[0]),(num)[1]) 
 				else :

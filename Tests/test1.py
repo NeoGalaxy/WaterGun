@@ -1,11 +1,17 @@
-from classes import Grid
+from classes import Grid #assuming you are in /Inputs
 
-# Prend la grille grid1.txt, et la parse pour créer une variable de type Grid
-grille = Grid("../Inputs/Grids/Probs/grid1.grid") 
-
-print(grille) # -> "(6x6 grid)"
-#print("C'est une grille ",grille.l,"par", grille.h) # affiche la largeur et la hauteur de grille
-print(grille.getGrid()) # affiche la grille au format grid
+gridN1 = Grid("../Inputs/Grids/Probs/grid1.grid")
+with open("../Inputs/Grids/Probs/example.grid")as f:
+	gridN2 = Grid(f)
+with open("../Inputs/Grids/Probs/grid4x5N.grid")as f:
+	txt = f.read()
+	gridN3 = Grid(txt)
+print("grid number 1 : ",gridN1) # -> "(6x6 grid)"
+print(gridN1.getGrid()) # print the grid in grid1 format
+print("grid number 2 : ",gridN2) # -> "(6x6 grid)"
+print(gridN2.getGrid()) # print the grid in grid1 format
+print("grid number 3 : ",gridN3) # -> "(6x6 grid)"
+print(gridN3.getGrid()) # print the grid in grid1 format
 
 from classes import CNF
 
