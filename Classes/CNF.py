@@ -91,7 +91,7 @@ class CNF:
 			ret.append(intCl)
 		return ret
 
-	def readSolution(self, sol):
+	def readSolution(self, sol:list):
 		"""Convert the solution sol being a list of integers into a list of literals.
 		The input should be a result from a SAT solver's execution over the CNF self."""
 		if sol == 'UNSAT': return "UNSAT"
@@ -128,7 +128,7 @@ class CNF:
 		"""Return an iterator over the solutions of the CNF self."""
 		return self.readIterSolution(sat.itersolve(self.toIntegers()))
 
-	def ecrDimacs(self, path):
+	def ecrDimacs(self, path:str):
 		"""Writes a file at the path given in argument in the format DIMMACS."""
 		clauses =  len(self.c)
 		tempo = " 0\n".join(" ".join(str(v) for v in l) for l in self.toIntegers())

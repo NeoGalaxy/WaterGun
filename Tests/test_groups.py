@@ -1,6 +1,6 @@
 from classes import Grid, Direction
 
-grille = Grid("../Inputs/Grids/Probs/grid1.grid")
+grille = Grid("../Grids/Probs/grid1.grid")
 print("Grille : \n"+grille.getGrid(),"\n")
 print("Groupes : \n"+"\n".join(
 	", ".join(

@@ -1,5 +1,5 @@
 {
-	"path": "/Inputs/Grids/Probs/grid2x5V.grid",
+	"path": "/Grids/Probs/grid2x5V.grid",
 	"solution": [
 		[[0,3],[0,2],[0,1],[0,0],[1,0],[1,2]]
 	]

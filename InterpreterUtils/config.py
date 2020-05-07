@@ -23,7 +23,7 @@ class Config:
 
 	@staticmethod
 	def load():
-		content = {"gridsPath": "Inputs/Grids/Probs","svgOutPath": "Outputs","askConfirm": true,"restart": false,"openSvg": "eog","width": 0,"defaultWidth": 100}
+		content = {"gridsPath": "Grids/Probs","svgOutPath": "Outputs","askConfirm": True,"restart": False,"openSvg": "eog","width": 0,"defaultWidth": 100}
 		Config.config = content
 
 		try:

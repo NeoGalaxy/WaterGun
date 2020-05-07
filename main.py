@@ -205,7 +205,7 @@ def iohelp(arg):
 		"print" : ("","Prints a representation of the grid."),
 		"export" : (" <file> <y/n>","Export a representation of the grid in SVG. The second argument should be 'y' if you wish to open the result, and 'n' otherwise. Both arguments will be asked if not specified."),
 		"solve" : (" <file> <y/n>","Exports a solution of the current grid into the specified file. The second argument should be 'y' if you wish to open the result, and 'n' otherwise. Both arguments will be asked if not specified."),
-		"next" : (" <file>","Same as 'solve', but with a different solution on each call."),
+		"next" : (" <file> <y/n>","Same as 'solve', but with a different solution on each call."),
 		"config" : ("","Edit the configurations."),
 		"help" : ("","Print this help."),
 		"exit" : ("","Exit the program.")

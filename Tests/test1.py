@@ -1,9 +1,9 @@
-from classes import Grid #assuming you are in /Inputs
+from classes import Grid #assuming you are in /Tests
 
-gridN1 = Grid("../Inputs/Grids/Probs/grid1.grid")
-with open("../Inputs/Grids/Probs/example.grid")as f:
+gridN1 = Grid("../Grids/Probs/grid1.grid")
+with open("../Grids/Probs/example.grid")as f:
 	gridN2 = Grid(f)
-with open("../Inputs/Grids/Probs/grid4x5N.grid")as f:
+with open("../Grids/Probs/grid4x5N.grid")as f:
 	txt = f.read()
 	gridN3 = Grid(txt)
 print("grid number 1 : ",gridN1) # -> "(6x6 grid)"

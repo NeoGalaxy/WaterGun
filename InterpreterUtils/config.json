@@ -1,5 +1,5 @@
 {
-	"gridsPath": "Inputs/Grids/Probs",
+	"gridsPath": "Grids/Probs",
 	"svgOutPath": "Outputs",
 	"askConfirm": true,
 	"restart": false,

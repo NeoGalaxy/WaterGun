@@ -1,6 +1,6 @@
 from classes import Grid
 
-grille = Grid("../Inputs/Grids/Probs/grid1x2_multiple_answer.grid")
+grille = Grid("../Grids/Probs/grid1x2_multiple_answer.grid")
 print("Grille : \n"+grille.getGrid(),"\n")
 print("\nSingle solution :")
 print(grille.getSolution())

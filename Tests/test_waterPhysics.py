@@ -1,6 +1,6 @@
 from classes import Grid
 
-grille = Grid("../Inputs/Grids/Probs/grid1.grid")
+grille = Grid("../Grids/Probs/grid1.grid")
 cnf = grille.getWaterPhys()
 n = 0
 for clause in cnf.c:
