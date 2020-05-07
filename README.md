@@ -2,7 +2,7 @@
 
 ### Dependencies
 
-This project has been developed using Python 3.6.9, and might be incompatible with older versions than Python 3.6. Contact us if you need compatibility to a certain version.  
+This project has been developed using Python 3.6.9 and above, and will shurely be incompatible with older versions than Python 3.5. Contact us if you need compatibility to a certain version.  
 It also uses the module [pycosat](https://pypi.org/project/pycosat/), be sure to install it using `pip3 install pycosat` (or maybe `pip install pycosat`) before using this project.
 (Other dependencies : io, warnings, itertools, json, os, subprocess. Theses modules are normally built-in.)
 
