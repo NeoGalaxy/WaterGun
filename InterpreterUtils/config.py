@@ -93,7 +93,7 @@ class Config:
 	def get(arg):
 		try:
 			return Config.__getitem__(None, arg)
-		except Exception as e:
+		except KeyError as e:
 			return None
 
 	@staticmethod

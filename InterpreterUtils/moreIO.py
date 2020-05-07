@@ -87,4 +87,4 @@ class MoreIO:
 
 	@staticmethod
 	def __repr__():
-		return "<class 'moreIO'>"
+		return "<object 'moreIO'>"

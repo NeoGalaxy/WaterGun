@@ -89,15 +89,18 @@ class Grid:
 	def getGrid(self):
 		"""returns a string representing the grid in grid1 format. 
 		(Warning: the method is not totally finished, and the output is not valid if a value has more than 1 digit.)"""
-		res = "grid1\n#Automatically generated grid\n  " + ("_ " * self.__l) + "\n"
+		maxLen = max(len(str(v)) for v in self.__values['h'])
+		colsWidth = [(len(str(v)) if v != -1 else 1) for v in self.__values['v']]
+		res = "grid1\n#Automatically generated grid\n "+ " "*maxLen+ (" ".join("_"*v for v in colsWidth)) + " \n"
 		for y in range(self.__h):
-			res += str(self.__values['h'][y]) if self.__values['h'][y] != -1 else " "
+			val = str(self.__values['h'][y]) if self.__values['h'][y] != -1 else " "
+			res += " "*(maxLen - len(val)) + val
 			res += '|'
 			for x in range(self.__l):
-				res += '_' if y == self.__h-1 or self.__barrier['h'][y][x] else ' '
+				res += ('_' if y == self.__h-1 or self.__barrier['h'][y][x] else ' ')*colsWidth[x]
 				res += '|' if x == self.__l-1 or self.__barrier['v'][y][x] else ' '
 			res += "\n"
-		res += "  " + " ".join(str(x) if x != -1 else " " for x in self.__values['v'])
+		res += " "*maxLen + " " + " ".join(str(x) if x != -1 else " " for x in self.__values['v'])
 		return res
 
 	def getGroup(self,x:int,y:int) :
@@ -302,12 +305,12 @@ class Grid:
 
 	#======================#   Utilities   #======================#
 
-	"""Parse the intarable textLines into a grid"""
 	def __readGrid(self, textLines):
+		"""Parse the iterable textLines into a grid"""
 		colsIndex = None
 		for line in textLines:
-			line = line.split("#",1)[0]    # We don't take in account the comments
-			if len(line) == 0: continue  # If the line is empty, we can skip it
+			line = line.split("#",1)[0].rstrip() # We don't take in account the comments and whitespaces at the end
+			if len(line) == 0: continue          # If the line is empty, we can skip it
 
 			"""Parse the first line"""
 			if colsIndex == None:
@@ -397,7 +400,7 @@ class Grid:
 				raise ValueError("The values should be between 0 and the size. "+str(elem)+" is not in these bounds.")
 			return elem
 		else:
-			raise ValueError("The last line should contain only digits and spaces.")
+			raise ValueError("The last line should contain only digits and spaces, "+repr(elem)+" is not valid.")
 
 	def __next__(self):
 		if self.__cnf == None:
