@@ -4,53 +4,72 @@ class CaughtError(Exception):
 class MoreIO:
 	caught = CaughtError
 	@staticmethod
-	def title():
+	def title(width = 74):
 		MoreIO.printLines([
-			"==========================================================================",
-			"======   Welcome to our INF432 project's command line interpreter   ======",
-			"==========================================================================",
+			"="*width,
+			' '*(int((width-56)/2))+"Welcome to our INF432 project's command line interpreter",
+			"="*width,
+			"",
 			"Project of Eliezer Gwennan, Gansel Antoine and Boucherat Pacôme",
 			"Interpreter made by Gwennan",
 			""
-		])
+		], width = width)
 
 	@staticmethod
-	def printLines(lines, sep = " "):
+	def printWidth(*elements, width = None, sep = " ", indent = "", ws = " ", end = "\n"):
+		if width == None: return print(*elements, sep = " ", end = end)
+		remaining = sep.join(str(x) for x in elements).split(ws)
+		line = remaining[0]
+		for word in remaining[1:]:
+			if line != indent and line != "" and (len(line) + len(word) + len(ws)) > width:
+				print(line, end = "\n")
+				line = indent + word
+			else: line += ws + word
+		print(line, end = end)
+
+	@staticmethod
+	def printLines(lines, sep = " ", width = None, indent1 = "", indent2 = "", ws = " ", end = "\n"):
 		for l in lines:
 			if type(l) in [list, tuple]:
-				print(*l, sep = " ")
+				l = l.copy()
+				l[0] = indent1 + str(l[0])
+				MoreIO.printWidth(*l, sep = sep, ws = ws, indent = indent2, end = end, width = width)
 			else :
-				print(l, sep = " ")
+				MoreIO.printWidth(indent1+str(l), sep = sep, ws = ws, indent = indent2, end = end, width = width)
 	
 	@staticmethod
-	def readCommand(commands, prompt, error = 'Error : command {} is unknown', shortcut = False, haveArgs = True):
+	def readCommand(commands, prompt, error = 'Error : command {} is unknown', width = None, shortcut = False, haveArgs = True):
 		while True:
-			cmd = input(prompt).strip()
+			MoreIO.printWidth(prompt, width = width, end = "")
+			cmd = input().strip()
 			print()
 			if haveArgs : cmd = cmd.split(" ",1)
 			try :
 				f = commands[cmd[0] if haveArgs else cmd]
 			except KeyError as e:
-				if cmd[0] != "":
-					print(error.replace("{}", cmd[0] if haveArgs else cmd))
+				if haveArgs and cmd[0] != "":
+					MoreIO.printWidth(error.replace("{}", cmd[0]), width = width)
+				elif (not haveArgs) and cmd != "":
+					MoreIO.printWidth(error.replace("{}", cmd), width = width)
 			else:
 				try:
 					return f(cmd[1] if len(cmd) > 1 else "") if haveArgs else f()
 				except MoreIO.caught as e:
-					print(e)
+					MoreIO.printWidth(e, width = width)
 					return False
 				except Exception as e:
-					print("An uncaught error Occured !")
+					MoreIO.printWidth("An uncaught error Occured !", width = width)
 					raise(e)
 	
 	@staticmethod
-	def readNum(prompt, isFloat = True, error = "Error : the input should be a number.", hasText = False, specials = {}):
+	def readNum(prompt, isFloat = True, error = "Error : the input should be a number.", width = None, hasText = False, specials = {}):
 		def check(n) :
 			if n in specials : return specials[n]
 			else : return float(n) if isFloat else int(n)
 	
 		while True:
-			num = input(prompt).strip().split(" ",1)
+			MoreIO.printWidth(prompt, width = width)
+			num = input().strip().split(" ",1)
 			if num[0] == "":
 				continue
 			try:

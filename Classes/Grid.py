@@ -13,6 +13,11 @@ class Direction:
 
 class Grid:
 	def __init__(self, arg):
+		"""Parse a specified grid.
+		The arg should be of type :
+		- 'str' if it contains a path to a grid or the content of the grid itself
+		- '_io.TextIOWrapper' if the opened file contains the grid
+		- 'list' if it contains each line of the grid"""
 		self.__l = 0
 		self.__h = 0
 		self.__barrier  = {'v':[], 'h':[]} # AKA. Bc and Bl in the report
@@ -50,10 +55,8 @@ class Grid:
 		self.__tilesNbCNF = self.__getTilesNbCNF()
 		self.__cnf = self.__waterPhysicsCNF.fusion(self.__tilesNbCNF)
 
-
-
-	"""Says if there is a barrier on the o border of the tile (i,j)"""
-	def getBarrier(self,i,j,o):
+	def getBarrier(self, i:int, j:int, o:Direction):
+		"""Returns True if and only if the grid has a barrier on the o border of the tile i,j"""
 		if not(0 <= i < self.__l) or not(0 <= j < self.__h) : # Yes, it is allowed in python xD
 			raise KeyError("The node of coordinates ("+str(i)+","+str(j)+") doesn't exist.")
 
@@ -73,17 +76,20 @@ class Grid:
 			if (i == 0) : return True # The line on the right always have a barrier on its right
 			return (self.__barrier["v"][self.__h-1-j][i-1])
 
-	"""Says the value of the vectical line"""
-	def getValVert(self,i):
-		return self.__values["v"][i]
+	def getValVert(self, i:int):
+		"""returns the value on the column number i, or None if the column doesn't have any"""
+		v = self.__values["v"][i]
+		return None if v == -1 else v
 
-	"""Says the value of the horizontal line"""
-	def getValHor(self,j):
-		return self.__values["h"][self.h()-j-1]
+	def getValHor(self, j:int):
+		"""returns the value on the line number j, or None if the line doesn't have any"""
+		v = self.__values["h"][self.h()-j-1]
+		return None if v == -1 else v
 
-	"""Gives a string representing the grid"""
 	def getGrid(self):
-		res = "grid1\n#Automacically generated grid\n  " + ("_ " * self.__l) + "\n"
+		"""returns a string representing the grid in grid1 format. 
+		(Warning: the method is not totally finished, and the output is not valid if a value has more than 1 digit.)"""
+		res = "grid1\n#Automatically generated grid\n  " + ("_ " * self.__l) + "\n"
 		for y in range(self.__h):
 			res += str(self.__values['h'][y]) if self.__values['h'][y] != -1 else " "
 			res += '|'
@@ -94,9 +100,10 @@ class Grid:
 		res += "  " + " ".join(str(x) if x != -1 else " " for x in self.__values['v'])
 		return res
 
-	def getGroup(self,x,y) :
+	def getGroup(self,x:int,y:int) :
+		"""returns the group number of the tile of indexes x,y."""
 		if self.__groups == None:
-			raise NotImplementedError("Not working untill .mkGroups() is not sucessfully run.")
+			raise NotImplementedError("Not working until .mkGroups() is not successfully run.")
 		try:
 			return self.__groups[self.__h-y-1][x]
 		except IndexError as e:
@@ -104,23 +111,30 @@ class Grid:
 			return 0
 
 	def getWaterPhys(self) :
+		"""returns the CNF object representing the water physics."""
 		if self.__waterPhysicsCNF == None: return None
 		return self.__waterPhysicsCNF.copy()
 
 	def getTilesNbCNF(self) :
+		"""returns the CNF object representing the tile number."""
 		if self.__tilesNbCNF == None: return None
 		return self.__tilesNbCNF.copy()
 
 	def getCNF(self) :
+		"""returns the CNF object representing the whole grid."""
 		if self.__cnf == None: return None
 		return self.__cnf.copy()
 
 	def getSolution(self):
+		"""returns an array of string, representing a solution of the grid, or returns 'UNSAT' if the grid is unsatisfiable."""
 		if self.__cnf == None:
 			raise NotImplementedError("The CNF is not generated yet")
 		return self.__cnf.solve()
 
 	def getNextSolution(self):
+		"""returns a new array of string on each call, each array representing a solution of the grid.
+		If there is no more solution remaining, returns None and reset itself.
+		The internal iterator is the same as the one in Grid.__next__()."""
 		try:
 			return self.__next__()
 		except StopIteration as e:
@@ -128,10 +142,13 @@ class Grid:
 			return None
 
 	def getAllSolutions(self):
+		"""Returns an iterator, with each value of the iterator being an array of string representing a solution of the grid"""
 		return self.__cnf.itersolve()
 
-	"""Transform the solution into an svg picture, written in the file f. The solution should be an array of litterals of the form 'x,y' or '-x,y'."""
-	def writeSvg(self,f, sol = []):
+	def writeSvg(self,f, sol:list = []):
+		"""Transform the grid into an svg picture, and write it in the file f. 
+		If sol is specified, it will color the tiles full of water in blue and the empty tiles in gray.
+		Note : sol should be an array returned by getSolution(), getNextSolution() or by the iterator obtained in getAllSolutions()"""
 		f.write('<?xml version="1.1" encoding="UTF-8"?>\n')
 		length = self.l()
 		height = self.h()
@@ -176,8 +193,9 @@ class Grid:
 		f.write('\t</g>\n')
 		f.write('</svg>\n')
 
-	"""Transform the solution into a string in svg format. The solution should be an array of litterals of the form 'x,y' or '-x,y'."""
-	def writeSvgs(self, sol = []):
+	def writeSvgs(self, sol:list = []):
+		"""Transform the grid into an svg picture, and return it as a string.
+		Typically the same effect as Grid.writeSvg(f,sol), but returns the content instead of writing it."""
 		svg = '<?xml version="1.1" encoding="UTF-8"?>\n'
 		length = self.l()
 		height = self.h()
@@ -224,9 +242,11 @@ class Grid:
 		return svg
 
 	def h(self) :
+		"""The height of the grid"""
 		return self.__h
 
 	def l(self) :
+		"""The length of the grid"""
 		return self.__l
 
 	#########################################################################
@@ -263,7 +283,7 @@ class Grid:
 		myCNF = CNF()
 		for y in range(self.h()):
 			hVal = self.getValHor(y)
-			if hVal == -1: continue # On saute les lignes qui n'ont pas de val
+			if hVal == None: continue # On saute les lignes qui n'ont pas de val
 			for indexes in combinations(range(self.l()), self.l()-hVal+1):
 				myCNF.addClause([str(i)+","+str(y) for i in indexes])
 			for indexes in combinations(range(self.l()), hVal+1):
@@ -271,7 +291,7 @@ class Grid:
 
 		for x in range(self.l()):
 			vVal = self.getValVert(x)
-			if vVal == -1: continue # On saute les lignes qui n'ont pas de val
+			if vVal == None: continue # On saute les lignes qui n'ont pas de val
 			for indexes in combinations(range(self.h()), self.h()-vVal+1):
 				myCNF.addClause([str(x)+","+str(i) for i in indexes])
 			for indexes in combinations(range(self.h()), vVal+1):

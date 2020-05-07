@@ -2,34 +2,34 @@
 
 ## Organization
 
-The Grid solver is implemented in the directory [*/Classes*](https://github.com/NeoGalaxy/INF432/tree/master/Classes), see [*/Classes/README.md*](https://github.com/NeoGalaxy/INF432/tree/master/Classes/README.md) to know more.
+The Grid solver is implemented in the directory [`/Classes`](https://github.com/NeoGalaxy/INF432/tree/master/Classes), see [`/Classes/README.md`](https://github.com/NeoGalaxy/INF432/tree/master/Classes/README.md) to know more.
 
-_______________
-The directory [*/Inputs*](https://github.com/NeoGalaxy/INF432/tree/master/Inputs) is meant to contain the different grids to use as input, and their solutions.
 
-_______________
-The directory [*/Outputs*](https://github.com/NeoGalaxy/INF432/tree/master/Outputs) is meant to contain the svg files produced by the solver. Indeed, the solver can produce a SVG file (or a svg formatted string) to represent a grid or a grid's solution.
+The directory [`/Inputs`](https://github.com/NeoGalaxy/INF432/tree/master/Inputs) is meant to contain the different grids to use as input, and their solutions.
 
-_______________
-The directory [*/Tests*](https://github.com/NeoGalaxy/INF432/tree/master/Tests) contains some tests using the different functionalities of the solver, as well as the file [`classes.py`](https://github.com/NeoGalaxy/INF432/blob/master/Tests/classes.py) allowing to import */Classes* inside */Tests*. If you want or need to implement and test your own code, it is a good place to do it. (Be careful to keep the file `classes.py`, otherwise the other tests won't run anymore)
 
-_______________
-The directory [*/InterpreterUtils*](https://github.com/NeoGalaxy/INF432/tree/master/InterpreterUtils) contains some code used by the interpreter [`main.py`](https://github.com/NeoGalaxy/INF432/tree/main.py).
+The directory [`/Outputs`](https://github.com/NeoGalaxy/INF432/tree/master/Outputs) is meant to contain the svg files produced by the solver. Indeed, the solver can produce a SVG file (or a svg formatted string) to represent a grid or a grid's solution.
+
+
+The directory [`/Tests`](https://github.com/NeoGalaxy/INF432/tree/master/Tests) contains some tests using the different functionalities of the solver, as well as the file [`classes.py`](https://github.com/NeoGalaxy/INF432/blob/master/Tests/classes.py) allowing to import [`/Classes`](https://github.com/NeoGalaxy/INF432/blob/master/Classes) inside [`/Tests`](https://github.com/NeoGalaxy/INF432/blob/master/Tests). If you want or need to implement and test your own code, it is a good place to do it. (Be careful to keep the file `classes.py`, otherwise the other tests won't run anymore)
+
+
+The directory [`/InterpreterUtils`](https://github.com/NeoGalaxy/INF432/tree/master/InterpreterUtils) contains some code used by the interpreter [`main.py`](https://github.com/NeoGalaxy/INF432/tree/main.py).
 
 ## Usage
 
 You have 3 ways to use our solver : 
-1. Launch the interpreter `/main.py` after moving the grid(s) you want to resolve into the directory [*/Inputs*](https://github.com/NeoGalaxy/INF432/tree/master/Inputs) or set the *path to the grids to read* configuration to the directory where your grid is located if it is not already done.
-1. Write your code in the directory [*/Tests*](https://github.com/NeoGalaxy/INF432/tree/master/Tests). 
-1. Copy the directory [*/Classes*](https://github.com/NeoGalaxy/INF432/tree/master/Classes) into your project, and use it.
+1. Launch the interpreter [`main.py`](https://github.com/NeoGalaxy/INF432/tree/main.py) after moving the grid(s) you want to resolve into the directory [`/Inputs`](https://github.com/NeoGalaxy/INF432/tree/master/Inputs) or set the *path to the grids to read* configuration to the directory where your grid is located if it is not already done.
+2. Write your code in the directory [`/Tests`](https://github.com/NeoGalaxy/INF432/tree/master/Tests). 
+3. Copy the directory [`/Classes`](https://github.com/NeoGalaxy/INF432/tree/master/Classes) into your project, and use it.
 
 If you use the interpreter, refer to its help command in order to understand how it works.
 
-For the two other solutions, you will need to first import the classes. If you are in the directory [*/Inputs*](https://github.com/NeoGalaxy/INF432/tree/master/Inputs), you can simply import `classes.py` or import from it the classes you need:
+For the two other solutions, you will need to first import the classes. If you are in the directory [`/Inputs`](https://github.com/NeoGalaxy/INF432/tree/master/Inputs), you can simply import `classes.py` or import from it the classes you need:
 ```python
 from classes import *
 ```
-Otherwise, you'll need to import the directory [*/Classes*](https://github.com/NeoGalaxy/INF432/tree/master/Classes). If it is in your current directory, you can simply do the following :
+Otherwise, you'll need to import the directory [`/Classes`](https://github.com/NeoGalaxy/INF432/tree/master/Classes). If it is in your current directory, you can simply do the following :
 ```python
 from Classes import *
 ```
