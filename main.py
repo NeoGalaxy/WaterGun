@@ -17,18 +17,20 @@ def inputw(prompt):
 	return input()
 
 def iolist(arg):
+	"""List all the grids"""
 	arg = arg.lstrip()
 	print("-"*width())
 	if len(grids) == 0 :
 		raise mio.caught('No Loaded Grid.')
 	else:
-		print("Loaded grids :")
+		printw("Loaded grids :", width = width())
 		for k in grids:
-			print(" -> " if grids[k] == current else "    ",k,":",grids[k])
+			printw(" -> " if grids[k] == current else "    ",k,":",grids[k], width = width())
 	if (arg != "") : 
-		print("\nWarning : the '{}' in the command has been ignored.".format(arg))
+		printw("\nWarning : the '{}' in the command has been ignored.".format(arg), width = width())
 
 def load(arg):
+	"""Uses Grid() to load a grid, and adds it to the grids"""
 	global current
 	global currentName
 	args = arg.lstrip().split(" ",1)
@@ -44,13 +46,13 @@ def load(arg):
 			if nameLength < len(f):
 				nameLength = len(f)
 
-		print("Files available : ")
+		printw("Files available : ", width = width())
 		lineLen = 0
 		for f in files:
 			if lineLen > 0 and lineLen+nameLength > config["width"]:
 				print()
 				lineLen = 0
-			print(f," "*(nameLength-len(f)), end = " ")
+			printw(f," "*(nameLength-len(f)), end = " ", width = width())
 			lineLen += nameLength+1
 		print()
 		fname = inputw("\nWhich file would you like to open?\n").strip()
@@ -71,13 +73,14 @@ def load(arg):
 			gname = inputw("Give the grid a name : (empty for "+repr(alter)+")\n").strip()
 			if gname == "": gname = alter
 		grids[gname] = newGrid
-		print("The loading ended successfully!")
+		printw("The loading ended successfully!", width = width())
 		if args[0] == "": 
-			print("Note : next time you can write the command 'load {} {}' to make this same loading.".format(fname, gname))
+			printw("Note : next time you can write the command 'load {} {}' to make this same loading.".format(fname, gname), width = width())
 		current = grids[gname]
 		currentName = gname
 
 def switch(arg):
+	"""Changes current to the chosen grid"""
 	arg = arg.lstrip()
 	global current
 	global currentName
@@ -93,11 +96,13 @@ def switch(arg):
 		raise mio.caught("Grid "+repr(newGrid)+" not found.")
 
 def ioprint(arg):
+	"""Uses Grid.getGrid() to print a grid"""
 	print("-"*width())
-	print("Here is the grid :")
+	printw("Here is the grid :", width = width())
 	print(current.getGrid().split('\n',1)[1])
 
 def export(arg):
+	"""Uses Grid.writeSvg() to export a grid"""
 	ask = config["askConfirm"]
 	arg = arg.lstrip()
 	print("-"*width())
@@ -107,7 +112,7 @@ def export(arg):
 	if not fname.endswith(".svg"): fname += ".svg"
 
 	if ask and os.path.isfile(os.path.join(config["svgOutPath"], fname)) :
-		print("Warning : There already exists a file named",fname, end = ".\n")
+		printw("Warning : There already exists a file named",fname, end = ".\n", width = width())
 		exit = "n" == mio.readCommand({
 			"y": lambda: "y",
 			"n": lambda: "n"
@@ -123,10 +128,10 @@ def export(arg):
 	except ValueError as e:
 		raise mio.caught(str(e))
 	else :
-		print("Export done successfully.")
+		printw("Export done successfully.", width = width())
 		if len(arg) > 1:
 			if not arg[1] in ["y","n"]:
-				printw("Warning : the argument",repr(arg[1]),"is ignored.")
+				printw("Warning : the argument",repr(arg[1]),"is ignored.", width = width())
 			else :
 				openFile = arg[1] == "y"
 		if openFile == None: 
@@ -139,6 +144,8 @@ def export(arg):
 			subprocess.Popen(cmd,stdin=None, stdout=None, stderr=None, close_fds=True)
 
 def solve(arg, usenext = False):
+	"""Uses Grid.getSolution() or Grid.getNextSolution() to get a solution.
+	Then uses Grid.writeSvg() to export the solution"""
 	global current
 	ask = config["askConfirm"]
 	print("-"*width())
@@ -151,7 +158,7 @@ def solve(arg, usenext = False):
 				raise mio.caught("The grid has no solution")
 			if not config["restart"] and not mio.readCommand({"y": lambda: True,"n": lambda: False}, 
 				"All the solutions of this grid have been explored. Do you want to export the first solution? (y/n)\n", error = 'Enter "y" or "n".', haveArgs = False, width = width()): 
-				printw("Aborting. Note: the solutions have been reinitialized, so the next sol. will be the first one.")
+				printw("Aborting. Note: the solutions have been reinitialized, so the next sol. will be the first one.", width = width())
 				return
 			s = current.getNextSolution()
 	else:
@@ -165,7 +172,7 @@ def solve(arg, usenext = False):
 	if not fname.endswith(".svg"): fname += ".svg"
 
 	if ask and os.path.isfile(os.path.join(config["svgOutPath"], fname)) :
-		print("Warning : There already exists a file named",fname, end = ".\n")
+		printw("Warning : There already exists a file named",fname, end = ".\n", width = width())
 		exit = "n" == mio.readCommand({
 			"y": lambda: "y",
 			"n": lambda: "n"
@@ -181,11 +188,11 @@ def solve(arg, usenext = False):
 	except ValueError as e:
 		raise mio.caught(str(e))
 	else :
-		print("Export done successfully.")
+		printw("Export done successfully.", width = width())
 		openFile = None
 		if len(arg) > 1:
 			if not arg[1] in ["y","n"]:
-				printw("Warning : the argument",repr(arg[1]),"is ignored.")
+				printw("Warning : the argument",repr(arg[1]),"is ignored.", width = width())
 			else :
 				openFile = arg[1] == "y"
 		if openFile == None: 
@@ -198,6 +205,7 @@ def solve(arg, usenext = False):
 			subprocess.Popen(cmd,stdin=None, stdout=None, stderr=None, close_fds=True)
 
 def iohelp(arg):
+	"""Prints the help"""
 	allHelps = {
 		"list" : ("","List the loaded grids"),
 		"load" : (" <file> <name>","Load the specified file in the Grids directory specified in the configurations and use it as current grid. If no file or name is specified, they will be asked."),
@@ -212,14 +220,14 @@ def iohelp(arg):
 	}
 	
 	print("-"*width())
-	print("Available commands :")
+	printw("Available commands :", width = width())
 	for cmd in allHelps:
 		out = "" if width() < 24 else " -> "
 		indent = "     "
 		printw(out+cmd+allHelps[cmd][0]+" :", width = width())
 		mio.printLines([allHelps[cmd][1]], width = width(), indent1 = indent, indent2 = indent)
 
-commands = {
+commands = { # A dict assigning a function to each command
 	"list" : iolist,
 	"load" : load,
 	"switch" : switch,
@@ -239,9 +247,9 @@ def main():
 		if current != None : printw("Current grid :", currentName, current, width = width(), indent = "    ")
 try:
 	main()
-	printw("Note : Run the function 'main()' to go back in the interpreter")
+	printw("Note : Run the function 'main()' to go back in the interpreter", width = width())
 except Exception as e:
-	print("=========================================================================")
-	print("=======> Run the function 'main()' to go back in the interpreter <=======")
-	print("=========================================================================")
+	print("="*width())
+	printw("=======> Run the function 'main()' to go back in the interpreter <=======", width = width())
+	print("="*width())
 	raise e

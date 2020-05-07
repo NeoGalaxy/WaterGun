@@ -131,7 +131,7 @@ class CNF:
 	def ecrDimacs(self, path:str):
 		"""Writes a file at the path given in argument in the format DIMMACS."""
 		clauses =  len(self.c)
-		tempo = " 0\n".join(" ".join(str(v) for v in l) for l in self.toIntegers())
+		tempo = " 0\n".join(" ".join(str(v) for v in l) for l in self.toIntegers()) + " 0\n"
 		
 		"""
 		if at the beginning we have : self.dico = {} and self.c = [[5, -2, z],[z, a, -5],[2, -z],[-a]],
@@ -164,6 +164,9 @@ class CNF:
 		res = CNF(*self.c)
 		res.dico = self.dico.copy()
 		return res
+
+	def __iter__(self):
+		return (x for x in self.c.copy())
 
 	def __str__(self):
 		return ("CNF{"+", ".join([str(x) for x in self.c])+"}")
