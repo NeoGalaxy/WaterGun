@@ -29,7 +29,12 @@ _____________
 In the interpreter, you can import one or many grids from the directory [`/Grids/Probs`](https://github.com/NeoGalaxy/INF432/tree/master/Grids/Probs) (or from any other directory by changing the configuration), export them as SVG images and export their solutions also in SVG, to the directory [`/Outputs`](https://github.com/NeoGalaxy/INF432/tree/master/Outputs) (also a customizable configuration). 
 You can refer to the `help` command to see how to use the interpreter. 
 
+<<<<<<< HEAD
 Here is an example of commands to load `example.grid`, and give one of its solutions in the file **[Grids/Solutions](https://github.com/NeoGalaxy/INF432/tree/master/Grids/Solutions)/exampleSol.svg** :
+=======
+Here is an example of commands to load `example.grid`, and give one of its solutions in the file  
+*[Grids/Solutions](https://github.com/NeoGalaxy/INF432/tree/master/Grids/Solutions)/exampleSol.svg* :
+>>>>>>> improved README
 ```
 config
 2
