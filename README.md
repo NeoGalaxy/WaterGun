@@ -14,12 +14,12 @@ The directory [`/Outputs`](https://github.com/NeoGalaxy/INF432/tree/master/Outpu
 The directory [`/Tests`](https://github.com/NeoGalaxy/INF432/tree/master/Tests) contains some tests using the different functionalities of the solver, as well as the file [`classes.py`](https://github.com/NeoGalaxy/INF432/blob/master/Tests/classes.py) allowing to import [`/Classes`](https://github.com/NeoGalaxy/INF432/blob/master/Classes) inside [`/Tests`](https://github.com/NeoGalaxy/INF432/blob/master/Tests). If you want or need to implement and test your own code, it is a good place to do it. (Be careful to keep the file `classes.py`, otherwise the other tests won't run anymore)
 
 
-The directory [`/InterpreterUtils`](https://github.com/NeoGalaxy/INF432/tree/master/InterpreterUtils) contains some code used by the interpreter [`main.py`](https://github.com/NeoGalaxy/INF432/tree/main.py).
+The directory [`/InterpreterUtils`](https://github.com/NeoGalaxy/INF432/tree/master/InterpreterUtils) contains some code used by the interpreter [`main.py`](https://github.com/NeoGalaxy/INF432/tree/master/main.py).
 
 ## Usage
 
 You have 3 ways to use our solver : 
-1. Launch the interpreter [`main.py`](https://github.com/NeoGalaxy/INF432/tree/main.py) after moving the grid(s) you want to resolve into the directory [`/Grids`](https://github.com/NeoGalaxy/INF432/tree/master/Grids) or set the *path to the grids to read* configuration to the directory where your grid is located if it is not already done.
+1. Launch the interpreter [`main.py`](https://github.com/NeoGalaxy/INF432/tree/master/main.py) after moving the grid(s) you want to resolve into the directory [`/Grids`](https://github.com/NeoGalaxy/INF432/tree/master/Grids) or set the *path to the grids to read* configuration to the directory where your grid is located if it is not already done.
 2. Write some script in the directory [`/Tests`](https://github.com/NeoGalaxy/INF432/tree/master/Tests). 
 3. Copy the directory [`/Classes`](https://github.com/NeoGalaxy/INF432/tree/master/Classes) into your project, and use it in your scripts.
 
@@ -29,7 +29,7 @@ _____________
 In the interpreter, you can import one or many grids from the directory [`/Grids/Probs`](https://github.com/NeoGalaxy/INF432/tree/master/Grids/Probs) (or from any other directory by changing the configuration), export them as SVG images and export their solutions also in SVG, to the directory [`/Outputs`](https://github.com/NeoGalaxy/INF432/tree/master/Outputs) (also a customizable configuration). 
 You can refer to the `help` command to see how to use the interpreter. 
 
-Here is an example of commands to load `example.grid`, and give one of its solutions in the file [`Grids/Solutions`](https://github.com/NeoGalaxy/INF432/tree/master/Grids/Solutions)/exampleSol.svg :
+Here is an example of commands to load `example.grid`, and give one of its solutions in the file **[Grids/Solutions](https://github.com/NeoGalaxy/INF432/tree/master/Grids/Solutions)/exampleSol.svg** :
 ```
 config
 2
@@ -53,7 +53,7 @@ from Classes import *
 ```
 Otherwise, you'll have to find a way to import it (like done in `classes.py`).
 
-Now that the classes are imported, to create a grid from a file or a string, use the class `Grid`. The `Grid` class' constructor can take many different kinds of variables as argument (A string containing the file's path, an opened file, a string containing the grid, a list of strings with each element of the list being a line of the grid). Here is an example with each possibility:
+Now that the classes are imported, to create a grid from a file or a string, use the class `Grid`. The `Grid` class' constructor can take many different kinds of variables as argument, here is an example with each possibility:
 ```python
 from classes import Grid #assuming you are in /Tests
 gridN1 = Grid("../Grids/Probs/grid1.grid")
@@ -68,6 +68,14 @@ print("grid number 2 : ",gridN2) # -> "(6x6 grid)"
 print(gridN2.getGrid()) # print the grid in grid1 format
 print("grid number 3 : ",gridN3) # -> "(6x6 grid)"
 print(gridN3.getGrid()) # print the grid in grid1 format
+```
+> ```python
+__init__(self, arg)
+    Parse a specified grid.
+    The arg should be of type :
+    - 'str' if it contains a path to a grid or the content of the grid itself
+    - '_io.TextIOWrapper' if the opened file contains the grid
+    - 'list' if it contains each line of the grid
 ```
 
 Now, to get a solution, just use `Grid.getSolution()`. The return value of this call is a list of strings, each string being of the form `"i,j"` or `"-i,j"`, `i` and `j` being the coordinates of the tile from the bottom left. If there is a `-`, then the tile should be empty, and if there is no `-`, the tile should have water (and if there is neither, this tile can be empty as well as full of water).  
