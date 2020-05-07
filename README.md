@@ -29,8 +29,7 @@ _____________
 In the interpreter, you can import one or many grids from the directory [`/Grids/Probs`](https://github.com/NeoGalaxy/INF432/tree/master/Grids/Probs) (or from any other directory by changing the configuration), export them as SVG images and export their solutions also in SVG, to the directory [`/Outputs`](https://github.com/NeoGalaxy/INF432/tree/master/Outputs) (also a customizable configuration). 
 You can refer to the `help` command to see how to use the interpreter. 
 
-Here is an example of commands to load `example.grid`, and give one of its solutions in the file  
-*[Grids/Solutions](https://github.com/NeoGalaxy/INF432/tree/master/Grids/Solutions)/exampleSol.svg* :
+Here is an example of commands to load `example.grid`, and give one of its solutions in the file `Grids/Solutions/exampleSol.svg` :
 ```
 config
 2
@@ -70,14 +69,15 @@ print(gridN2.getGrid()) # print the grid in grid1 format
 print("grid number 3 : ",gridN3) # -> "(6x6 grid)"
 print(gridN3.getGrid()) # print the grid in grid1 format
 ```
+> Here is the `help(Grid.__init__)`, explaining the types of inputs possible :
 > ```python
-__init__(self, arg)
-    Parse a specified grid.
-    The arg should be of type :
-    - 'str' if it contains a path to a grid or the content of the grid itself
-    - '_io.TextIOWrapper' if the opened file contains the grid
-    - 'list' if it contains each line of the grid
-```
+> __init__(self, arg)
+>     Parse a specified grid.
+>     The arg should be of type :
+>     - 'str' if it contains a path to a grid or the content of the grid itself
+>     - '_io.TextIOWrapper' if the opened file contains the grid
+>     - 'list' if it contains each line of the grid
+> ```
 
 Now, to get a solution, just use `Grid.getSolution()`. The return value of this call is a list of strings, each string being of the form `"i,j"` or `"-i,j"`, `i` and `j` being the coordinates of the tile from the bottom left. If there is a `-`, then the tile should be empty, and if there is no `-`, the tile should have water (and if there is neither, this tile can be empty as well as full of water).  
 You can also use `Grid.getNextSolution()`, which gives a new solution on each call until it returns `None` (which means there are no other solution), or `Grid.getAllSolutions()` which returns a generator (a kind of iterator) over the different solutions, or even iterate through grid (with `next()` or with a for loop). Here is an example:
@@ -118,7 +118,7 @@ for s in (mygrid):
 ```
 > **/!\\** Note the following : The iterator used by Grid.getNextSolution() and next(Grid) are the same. So mixing both methods will result in iterating thought the same iterator (and **not** though two different iterators). The difference between them is that `next(Grid)` will throw an error after the last element (as expected for an iterator), whereas `Grid.getNextSolution()` will return a `None` **and reset the iterator** (allowing to re-use Grid.getNextSolution() and next(Grid) after it has returned None).
 
-Once you have a solution, you can print it, or you can visualize it in a svg image by using `Grid.writeSvg()` or `Grid.writeSvgs()`: 
+Once you have a solution, what we have done is to print it directly. But you can also visualize it in a svg image by using `Grid.writeSvg()` or `Grid.writeSvgs()`: 
 ```python
 from classes import Grid
 
@@ -134,4 +134,10 @@ f = open("../Outputs/test2.svg","w")
 grille.writeSvg(f,s)
 f.close()
 ```
-> Note: *If no solution is given to `Grid.writeSvg()` or `Grid.writeSvgs()`, they will output a SVG representation of the grid itself*.
+> Note: *If no solution is given to `Grid.writeSvg()` or `Grid.writeSvgs()`, they will output a SVG representation of the grid itself. On the output, blue tiles should have water and gray tiles should not have water. They may also have white tiles, which are tiles that could either be with or without water. (These white tiles appear on grids where the tile have no rule attached to it, so when it have walls all around itself, and no vertical or horizontal value on its column/line.*
+
+_________
+
+Thanks for reading, and enjoy !
+
+***Gwennan, Antoine and Pacôme***
