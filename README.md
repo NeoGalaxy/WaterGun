@@ -1,9 +1,11 @@
 # INF432 Project : Water Fun grid solver
 
+**In this branch, the bugs discovered after May the 7th are debugged. To get the version of May the 7th, check the [master branch](https://github.com/NeoGalaxy/INF432/tree/master). The resolved bugs are written here.**
+
 ### Bugs resolved
 
-1. When a grid has no vertical value, the line where these are is ignored, resulting in an exception when trying th get the vertical values.
-2. In the interpreter, the command 'export' results in a bug if the output file is not specified in the command-line.
+1. When a grid has no vertical value, the line where these are is ignored, resulting in an exception when trying th get the vertical values. Resolved by [this modification](https://github.com/NeoGalaxy/INF432/commit/95544f1f692d34580e3c50bf4c8f835923e57c26#diff-4bd621a8721e8d3417c09addfaa97c35R328). 
+2. In the interpreter, the command 'export' results in a bug if the output file is not specified in the command-line. Resolved by [this modification](https://github.com/NeoGalaxy/INF432/commit/95544f1f692d34580e3c50bf4c8f835923e57c26#diff-5bc02cefb3ea9e27f1a6776eabd1935dR132). 
 
 ### Dependencies
 
@@ -13,31 +15,31 @@ It also uses the module [pycosat](https://pypi.org/project/pycosat/), be sure to
 
 ## Organization
 
-The Grid solver is implemented in the directory [`/Classes`](https://github.com/NeoGalaxy/INF432/tree/master/Classes), see [`/Classes/README.md`](https://github.com/NeoGalaxy/INF432/tree/master/Classes/README.md) to know more.
+The Grid solver is implemented in the directory [`/Classes`](https://github.com/NeoGalaxy/INF432/tree/NoBug/Classes), see [`/Classes/README.md`](https://github.com/NeoGalaxy/INF432/tree/NoBug/Classes/README.md) to know more.
 
 
-The directory [`/Grids`](https://github.com/NeoGalaxy/INF432/tree/master/Grids) is meant to contain the different [grids to use as input](https://github.com/NeoGalaxy/INF432/tree/master/Grids/Probs), and [their solutions](https://github.com/NeoGalaxy/INF432/tree/master/Grids/Solutions).
+The directory [`/Grids`](https://github.com/NeoGalaxy/INF432/tree/NoBug/Grids) is meant to contain the different [grids to use as input](https://github.com/NeoGalaxy/INF432/tree/NoBug/Grids/Probs), and [their solutions](https://github.com/NeoGalaxy/INF432/tree/NoBug/Grids/Solutions).
 
 
-The directory [`/Outputs`](https://github.com/NeoGalaxy/INF432/tree/master/Outputs) is meant to contain the svg files produced by the solver. Indeed, the solver can produce a SVG file (or a svg formatted string) to represent a grid or a grid's solution.
+The directory [`/Outputs`](https://github.com/NeoGalaxy/INF432/tree/NoBug/Outputs) is meant to contain the svg files produced by the solver. Indeed, the solver can produce a SVG file (or a svg formatted string) to represent a grid or a grid's solution.
 
 
-The directory [`/Tests`](https://github.com/NeoGalaxy/INF432/tree/master/Tests) contains some tests using the different functionalities of the solver, as well as the file [`classes.py`](https://github.com/NeoGalaxy/INF432/blob/master/Tests/classes.py) allowing to import [`/Classes`](https://github.com/NeoGalaxy/INF432/blob/master/Classes) inside [`/Tests`](https://github.com/NeoGalaxy/INF432/blob/master/Tests). If you want or need to implement and test your own code, it is a good place to do it. (Be careful to keep the file `classes.py`, otherwise the other tests won't run anymore)
+The directory [`/Tests`](https://github.com/NeoGalaxy/INF432/tree/NoBug/Tests) contains some tests using the different functionalities of the solver, as well as the file [`classes.py`](https://github.com/NeoGalaxy/INF432/blob/NoBug/Tests/classes.py) allowing to import [`/Classes`](https://github.com/NeoGalaxy/INF432/blob/NoBug/Classes) inside [`/Tests`](https://github.com/NeoGalaxy/INF432/blob/NoBug/Tests). If you want or need to implement and test your own code, it is a good place to do it. (Be careful to keep the file `classes.py`, otherwise the other tests won't run anymore)
 
 
-The directory [`/InterpreterUtils`](https://github.com/NeoGalaxy/INF432/tree/master/InterpreterUtils) contains some code used by the interpreter [`main.py`](https://github.com/NeoGalaxy/INF432/tree/master/main.py).
+The directory [`/InterpreterUtils`](https://github.com/NeoGalaxy/INF432/tree/NoBug/InterpreterUtils) contains some code used by the interpreter [`main.py`](https://github.com/NeoGalaxy/INF432/tree/NoBug/main.py).
 
 ## Usage
 
 You have 3 ways to use our solver : 
-1. Launch the interpreter [`main.py`](https://github.com/NeoGalaxy/INF432/tree/master/main.py) after moving the grid(s) you want to resolve into the directory [`/Grids`](https://github.com/NeoGalaxy/INF432/tree/master/Grids) or set the *path to the grids to read* configuration to the directory where your grid is located if it is not already done.
-2. Write some script in the directory [`/Tests`](https://github.com/NeoGalaxy/INF432/tree/master/Tests). 
-3. Copy the directory [`/Classes`](https://github.com/NeoGalaxy/INF432/tree/master/Classes) into your project, and use it in your scripts.
+1. Launch the interpreter [`main.py`](https://github.com/NeoGalaxy/INF432/tree/NoBug/main.py) after moving the grid(s) you want to resolve into the directory [`/Grids`](https://github.com/NeoGalaxy/INF432/tree/NoBug/Grids) or set the *path to the grids to read* configuration to the directory where your grid is located if it is not already done.
+2. Write some script in the directory [`/Tests`](https://github.com/NeoGalaxy/INF432/tree/NoBug/Tests). 
+3. Copy the directory [`/Classes`](https://github.com/NeoGalaxy/INF432/tree/NoBug/Classes) into your project, and use it in your scripts.
 
 _____________
 ### The interpreter
 
-In the interpreter, you can import one or many grids from the directory [`/Grids/Probs`](https://github.com/NeoGalaxy/INF432/tree/master/Grids/Probs) (or from any other directory by changing the configuration), export them as SVG images and export their solutions also in SVG, to the directory [`/Outputs`](https://github.com/NeoGalaxy/INF432/tree/master/Outputs) (also a customizable configuration). 
+In the interpreter, you can import one or many grids from the directory [`/Grids/Probs`](https://github.com/NeoGalaxy/INF432/tree/NoBug/Grids/Probs) (or from any other directory by changing the configuration), export them as SVG images and export their solutions also in SVG, to the directory [`/Outputs`](https://github.com/NeoGalaxy/INF432/tree/NoBug/Outputs) (also a customizable configuration). 
 You can refer to the `help` command to see how to use the interpreter. 
 
 Here is an example of commands to load `example.grid`, and give one of its solutions in the file `Grids/Solutions/exampleSol.svg` :
@@ -50,16 +52,16 @@ load example.grid example
 solve exampleSol y
 exit
 ```
-> Advice : on terminal, you can use `ledit python3 main.py` instead of just `python3 main.py` to allow using the arrows to navigate on the command line and in the history.
+> Advice : on terminal, you can use `python3 -i main.py` instead of just `python3 main.py` to allow using the arrows to navigate on the command line and in the history, and use the python interpreter once you exit the interpreter (or when there sadly is an uncaught exception).
 
 _____________
 ### Scripting
 
-For the two other solutions, you will need to first import the classes. If you are in the directory [`/Grids`](https://github.com/NeoGalaxy/INF432/tree/master/Grids), you can simply import `classes.py` or import from it the classes you need:
+For the two other solutions, you will need to first import the classes. If you are in the directory [`/Grids`](https://github.com/NeoGalaxy/INF432/tree/NoBug/Grids), you can simply import `classes.py` or import from it the classes you need:
 ```python
 from classes import *
 ```
-Otherwise, you'll need to import the directory [`/Classes`](https://github.com/NeoGalaxy/INF432/tree/master/Classes). If it is in your current directory, you can simply do the following :
+Otherwise, you'll need to import the directory [`/Classes`](https://github.com/NeoGalaxy/INF432/tree/NoBug/Classes). If it is in your current directory, you can simply do the following :
 ```python
 from Classes import *
 ```
