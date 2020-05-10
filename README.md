@@ -1,5 +1,10 @@
 # INF432 Project : Water Fun grid solver
 
+### Bugs resolved
+
+1. When a grid has no vertical value, the line where these are is ignored, resulting in an exception when trying th get the vertical values.
+2. In the interpreter, the command 'export' results in a bug if the output file is not specified in the command-line.
+
 ### Dependencies
 
 This project has been developed using Python 3.6.9 and above, and will shurely be incompatible with older versions than Python 3.5. Contact us if you need compatibility to a certain version.  

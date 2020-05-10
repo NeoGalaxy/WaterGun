@@ -129,6 +129,7 @@ def export(arg):
 		raise mio.caught(str(e))
 	else :
 		printw("Export done successfully.", width = width())
+		openFile = None
 		if len(arg) > 1:
 			if not arg[1] in ["y","n"]:
 				printw("Warning : the argument",repr(arg[1]),"is ignored.", width = width())

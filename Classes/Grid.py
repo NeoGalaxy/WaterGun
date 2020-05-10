@@ -325,6 +325,7 @@ class Grid:
 					if char == "_":
 						colsIndex.append(((colsIndex[-1][1]+1), (nb+colsIndex[-1][1]+1)))
 				self.__l = len(colsIndex)-1
+				self.__values["v"] = [-1]*self.__l
 				continue
 
 			"""Prepare the parsing of other lines"""
