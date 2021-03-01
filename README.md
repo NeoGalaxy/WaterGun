@@ -1,9 +1,6 @@
-# INF432 Project : Water Fun grid solver
+# WaterGun : a Water Fun grid solver
 
-### Bugs resolved
 
-1. When a grid has no vertical value, the line where these are is ignored, resulting in an exception when trying th get the vertical values.
-2. In the interpreter, the command 'export' results in a bug if the output file is not specified in the command-line.
 
 ### Dependencies
 
