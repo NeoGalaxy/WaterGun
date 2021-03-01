@@ -1,28 +1,15 @@
+![](https://raw.githubusercontent.com/NeoGalaxy/WaterGun/master/logo.png)
+
 # WaterGun : a Water Fun grid solver
 
-
+This was a project for our second year of studies. It is a Water Fun grid solver.  
+Water Fun is a game where you have a grid with walls on the sides for only certain cells. There are also numbers on the sides of the grid. The goal is to fill the grid with water such that the numbers on the side of a line or column is the number of water cells on said row/column. But there is a constraint when filling the cells : all the cells that are connected should have the same level of water, as if it could flow from the top of the cell to the bottom. So you can't have an empty cell under a water cell (otherwise the water would fall), and you can't have an empty cell next to a water cell, assuming there is no wall between said cells.
 
 ### Dependencies
 
-This project has been developed using Python 3.6.9 and above, and will shurely be incompatible with older versions than Python 3.5. Contact us if you need compatibility to a certain version.  
+This project has been developed using Python 3.6.9 and above, and will surely be incompatible with older versions than Python 3.5. Contact [Gwennan](https://github.com/NeoGalaxy) if you need compatibility to a certain version.  
 It also uses the module [pycosat](https://pypi.org/project/pycosat/), be sure to install it using `pip3 install pycosat` (or maybe `pip install pycosat`) before using this project.
-(Other dependencies : io, warnings, itertools, json, os, subprocess. Theses modules are normally built-in.)
-
-## Organization
-
-The Grid solver is implemented in the directory [`/Classes`](https://github.com/NeoGalaxy/INF432/tree/master/Classes), see [`/Classes/README.md`](https://github.com/NeoGalaxy/INF432/tree/master/Classes/README.md) to know more.
-
-
-The directory [`/Grids`](https://github.com/NeoGalaxy/INF432/tree/master/Grids) is meant to contain the different [grids to use as input](https://github.com/NeoGalaxy/INF432/tree/master/Grids/Probs), and [their solutions](https://github.com/NeoGalaxy/INF432/tree/master/Grids/Solutions).
-
-
-The directory [`/Outputs`](https://github.com/NeoGalaxy/INF432/tree/master/Outputs) is meant to contain the svg files produced by the solver. Indeed, the solver can produce a SVG file (or a svg formatted string) to represent a grid or a grid's solution.
-
-
-The directory [`/Tests`](https://github.com/NeoGalaxy/INF432/tree/master/Tests) contains some tests using the different functionalities of the solver, as well as the file [`classes.py`](https://github.com/NeoGalaxy/INF432/blob/master/Tests/classes.py) allowing to import [`/Classes`](https://github.com/NeoGalaxy/INF432/blob/master/Classes) inside [`/Tests`](https://github.com/NeoGalaxy/INF432/blob/master/Tests). If you want or need to implement and test your own code, it is a good place to do it. (Be careful to keep the file `classes.py`, otherwise the other tests won't run anymore)
-
-
-The directory [`/InterpreterUtils`](https://github.com/NeoGalaxy/INF432/tree/master/InterpreterUtils) contains some code used by the interpreter [`main.py`](https://github.com/NeoGalaxy/INF432/tree/master/main.py).
+(Other dependencies : io, warnings, itertools, json, os, subprocess. Theses modules are built-in.)
 
 ## Usage
 
@@ -147,6 +134,24 @@ f.close()
 
 _________
 
-Thanks for reading, and enjoy !
+## Organization
+
+The Grid solver is implemented in the directory [`/Classes`](https://github.com/NeoGalaxy/INF432/tree/master/Classes), see [`/Classes/README.md`](https://github.com/NeoGalaxy/INF432/tree/master/Classes/README.md) to know more.
+
+
+The directory [`/Grids`](https://github.com/NeoGalaxy/INF432/tree/master/Grids) is meant to contain the different [grids to use as input](https://github.com/NeoGalaxy/INF432/tree/master/Grids/Probs), and [their solutions](https://github.com/NeoGalaxy/INF432/tree/master/Grids/Solutions).
+
+
+The directory [`/Outputs`](https://github.com/NeoGalaxy/INF432/tree/master/Outputs) is meant to contain the svg files produced by the solver. Indeed, the solver can produce a SVG file (or a svg formatted string) to represent a grid or a grid's solution.
+
+
+The directory [`/Tests`](https://github.com/NeoGalaxy/INF432/tree/master/Tests) contains some tests using the different functionalities of the solver, as well as the file [`classes.py`](https://github.com/NeoGalaxy/INF432/blob/master/Tests/classes.py) allowing to import [`/Classes`](https://github.com/NeoGalaxy/INF432/blob/master/Classes) inside [`/Tests`](https://github.com/NeoGalaxy/INF432/blob/master/Tests). If you want or need to implement and test your own code, it is a good place to do it. (Be careful to keep the file `classes.py`, otherwise the other tests won't run any more)
+
+
+The directory [`/InterpreterUtils`](https://github.com/NeoGalaxy/INF432/tree/master/InterpreterUtils) contains some code used by the interpreter [`main.py`](https://github.com/NeoGalaxy/INF432/tree/master/main.py).
+
+-----
+
+*Thanks for reading, and enjoy !*
 
 ***Gwennan, Antoine and Pacôme***
